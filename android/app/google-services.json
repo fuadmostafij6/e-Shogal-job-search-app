@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1042788269927",
+    "project_id": "e-shogal1",
+    "storage_bucket": "e-shogal1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1042788269927:android:11a9a3abbf32e698ac39c2",
+        "android_client_info": {
+          "package_name": "com.example.eshogal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1042788269927-m37eph8km6o3iph72knmqo02729hub99.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGQVNh4R0c6AoP6rhm50E4xh_jAtfoRCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1042788269927-m37eph8km6o3iph72knmqo02729hub99.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
