@@ -1,3 +1,5 @@
+import 'package:eshogal/screens/employer_dashboard_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../registered/registeredwithemail.dart';
@@ -13,6 +15,34 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Future signIn() async{
+
+    try{
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).whenComplete(() =>   Future.delayed(Duration.zero).then((_) {
+        Navigator.push(context,MaterialPageRoute(builder:(context)=> const EmployerDashBoardScreen()));
+      }));
+
+
+    }
+    on FirebaseAuthException catch (e){
+
+      setState(()=>{
+
+      });
+      showDialog(context: context, builder: (context)=>Center(
+        child: Text(e.toString()),
+      ));
+
+      print(e);
+    }
+
+    // Future.delayed(Duration.zero).then((_) {
+    //   Navigator.pop(context);
+    // });
+    //
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,10 +122,16 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                         }
                         return null;
                         },
+
                         enableSuggestions: true,
                         decoration: InputDecoration(
                           focusColor: Colors.white,
                           filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.transparent, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
 
                           //add prefix icon
 
@@ -153,7 +189,11 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                         decoration: InputDecoration(
                           focusColor: Colors.white,
                           filled: true,
-
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.transparent, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                           //add prefix icon
                           suffixIcon: IconButton(
                             icon: const Icon(
@@ -208,7 +248,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                     TextButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginWithPhone(verificationID: '',)));
+                            signIn();
                           }
                         },
                         style: TextButton.styleFrom(

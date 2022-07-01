@@ -23,7 +23,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       phoneNumber: phoneController.text,
       verificationCompleted: (PhoneAuthCredential credential) async {
         await auth.signInWithCredential(credential).then((value) {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginWithPhone(verificationID: '',)));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>  LoginWithPhone(verificationID: verificationID,)));
           print("SIgnUp");
          setState(()=>{
            otp = true,
@@ -39,7 +39,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         verificationID = verificationId;
         setState(() {});
       },
-      codeAutoRetrievalTimeout: (String verificationId) {},
+      codeAutoRetrievalTimeout: (String verificationId) {
+        verificationID = verificationId;
+        setState(() {});
+      },
     );
   }
   @override

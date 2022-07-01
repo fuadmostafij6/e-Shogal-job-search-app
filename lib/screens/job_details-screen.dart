@@ -15,7 +15,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Job Details"),
+        title: const Text("Job Details"),
         backgroundColor: Colors.grey[800],
       ),
       body: Column(

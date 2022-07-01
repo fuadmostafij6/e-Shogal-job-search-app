@@ -1,4 +1,7 @@
+import 'package:eshogal/login/loginwithemail.dart';
 import 'package:eshogal/login/signup_screen.dart';
+import 'package:eshogal/screens/creatjobScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
@@ -22,14 +25,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+
+    return
+
+
+      MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
 
         primarySwatch: Colors.blue,
       ),
-      home: const LoginSignupScreen()
+      home:const LoginWithEmail()
     );
   }
 }
