@@ -714,6 +714,9 @@ return Scaffold(
 
                             }
                           }
+                          else{
+                            addJobPost(jobTitleController.text,jobTitleDetails.text, selectedJobType,selectedArea,"","", deadLineController,joiningController,salaryController.text.toString(), counter.toString());
+                          }
 
 
                         }

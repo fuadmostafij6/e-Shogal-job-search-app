@@ -20,11 +20,11 @@ class _RegisteredWithEmailState extends State<RegisteredWithEmail> {
   final GlobalKey<NavigatorState> navigatorKey =
    GlobalKey<NavigatorState>();
 
-
+static const jobTypeList = ['worker', 'employee'];
+String selectedJobType = jobTypeList.first;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  String worker = "";
-  String employee = "";
+
   final _formKey = GlobalKey<FormState>();
   bool? reg;
 
@@ -48,7 +48,7 @@ class _RegisteredWithEmailState extends State<RegisteredWithEmail> {
     try{
       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((value) =>{
 
-        addUser(value.user!.uid,value.user!.displayName, worker==""?employee: worker)
+        addUser(value.user!.uid,value.user!.displayName,selectedJobType)
 
       }
 
@@ -363,34 +363,17 @@ if(reg==true){
 
                       ),
                       child: Row(
-                        children: [
-                          Row(
-                            children: [
-                              Radio(value: "Radio", groupValue: worker, onChanged: (value){
-
-
-
-                                setState(()=>{
-                                  worker = value.toString()
-
-                                });
-
-                              }),
-                              const Text("Worker")
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Radio(value: "Employee", groupValue: employee, onChanged: (value){
-
-                                setState(()=>{
-employee = value.toString()                                });
-
-                              }),
-                              const Text("Employee")
-                            ],
-                          )
-                        ],
+                        children: jobTypeList.map((e) {
+                          return Expanded(
+                            child: RadioListTile<String>(value: e, title: Text(e) ,groupValue: selectedJobType, onChanged: (value){
+                              setState(()=>{
+                                selectedJobType = value!
+                              }
+                              );
+                              
+                            }),
+                          );
+                        }).toList()
                       ),
                     ),
                     const SizedBox(height: 10.0,),

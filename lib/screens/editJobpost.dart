@@ -728,6 +728,9 @@ class _EditJobPostState extends State<EditJobPost> {
 
                             }
                           }
+                          else{
+                            editJobPost(jobTitleController.text,jobTitleDetails.text, selectedJobType,selectedArea,"","", deadLineController,joiningController,salaryController.text.toString(), counter.toString());
+                          }
 
 
                         }

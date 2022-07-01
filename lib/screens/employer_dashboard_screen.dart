@@ -49,9 +49,10 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
 
     return qn.docs;
   }
-   Future<void> refresh()async {
+   Future<void> refresh() {
     jobList.clear();
     fetchMyJob();
+    return Future.delayed(const Duration(seconds: 2));
   }
   @override
   void initState() {
@@ -73,7 +74,7 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
         child: Column(
           children: [
 
-            SizedBox(height: 24,),
+            const SizedBox(height: 24,),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -82,18 +83,23 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
                 Expanded(
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[200],
-                              border: Border.all(color: Colors.green,width: 4)
-                          ),
-                          height: 60,
-                          width: 60,
-                          child: Icon(Icons.list,size: 40,color: Colors.green[800],),
+                      InkWell(
+                        onTap: (){
+                          refresh();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey[200],
+                                border: Border.all(color: Colors.green,width: 4)
+                            ),
+                            height: 60,
+                            width: 60,
+                            child: Icon(Icons.list,size: 40,color: Colors.green[800],),
 
+                          ),
                         ),
                       ),
                       SizedBox(height: 5,),
@@ -180,7 +186,7 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
             SizedBox(height: 24,),
             Text("Job Posted By Me",style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
             SizedBox(height: 24,),
-
+            jobList.isEmpty? Center(child: CircularProgressIndicator(),):
             Expanded(
 
                 child: ListView.builder(
