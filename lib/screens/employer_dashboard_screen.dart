@@ -275,7 +275,7 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
                                                                                   count: ss.data!.docs[index]["vacancy"],
                                                                                   title: ss.data!.docs[index]["tile"],
                                                                                   salary: ss.data!.docs[index]["salary"],
-                                                                                  details: ss.data!.docs[index]["Details"],
+                                                                                  details: ss.data!.docs[index]["Details"], lon:ss.data!.docs[index]["long"] , lan: ss.data!.docs[index]["lan"],
                                                                                 )));
                                                                   },
                                                                   child: const Text(

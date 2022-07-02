@@ -16,7 +16,10 @@ class EditJobPost extends StatefulWidget {
   final String joiningDate;
   final String salary;
   final String count;
-  const EditJobPost({Key? key, required this.postId, required this.job, required this.title, required this.details, required this.area, required this.deadlineDate, required this.joiningDate, required this.salary, required this.count,}) : super(key: key);
+  final String lan;
+  final String lon;
+
+  const EditJobPost({Key? key, required this.postId, required this.job, required this.title, required this.details, required this.area, required this.deadlineDate, required this.joiningDate, required this.salary, required this.count, required this.lan, required this.lon,}) : super(key: key);
 
   @override
   State<EditJobPost> createState() => _EditJobPostState();
@@ -37,13 +40,13 @@ class _EditJobPostState extends State<EditJobPost> {
   String joiningController = "MM/DD/YYY";
   CollectionReference jobPost = FirebaseFirestore.instance.collection('job_post');
 
-  Future<void> editJobPost( String? jobTitle, String jobDetails,String typeOfEmployment, String jobArea, String lan, String long, String deadline, String joining,String salary, String vacancy  ) {
+  Future<void> editJobPost( String jobTitle, String jobDetails,String typeOfEmployment, String jobArea, String lan, String long, String deadline, String joining,String salary, String vacancy  ) {
 
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final myJob =jobPost.doc(widget.postId);
     return myJob
         .update({
-      'job_post_id': myJob.id,
+      'job_post_id': widget.postId,
       'uid': uid,
       'publish': true,
       'tile': jobTitle,
@@ -78,8 +81,7 @@ class _EditJobPostState extends State<EditJobPost> {
         fontSize: 16.0)));
   }
 
-  double? lan;
-  double ?long;
+
   @override
   void initState() {
     setState(()=>{
@@ -718,38 +720,10 @@ class _EditJobPostState extends State<EditJobPost> {
 
                       onPressed: ()async{
                         if(_formKey.currentState!.validate()) {
-                          if(selectedJobType == "Hourly") {
-                            LocationPermission permission = await Geolocator.requestPermission();
-                            var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                          editJobPost(jobTitleController.text,jobTitleDetails.text, selectedJobType,selectedArea,widget.lan,widget.lon, deadLineController,joiningController,salaryController.text.toString(), counter.toString());
 
-                            setState(()=>{
-                              lan = position.latitude,
-                              long = position.longitude
-
-                            });
-                            if(permission.name.isNotEmpty){
-                              editJobPost(jobTitleController.text,jobTitleDetails.text, selectedJobType,selectedArea,lan.toString(),long.toString(), deadLineController,joiningController,salaryController.text.toString(), counter.toString());
-
-                            }
-                            else{
-                              Fluttertoast.showToast(
-                                  msg: "If you don't permit your location, you can't post for hourly",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0
-                              );
-
-                            }
-                          }
-                          else{
-                            editJobPost(jobTitleController.text,jobTitleDetails.text, selectedJobType,selectedArea,"","", deadLineController,joiningController,salaryController.text.toString(), counter.toString());
                           }
 
-
-                        }
                       }, child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

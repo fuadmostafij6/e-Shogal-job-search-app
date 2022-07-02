@@ -201,7 +201,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) =>
-                                         WorkerJobDetails(location: ss.data!.docs[index]["jobArea"], vacancy: ss.data!.docs[index]["vacancy"], jobDetails: ss.data!.docs[index]["Details"], jobTitle: ss.data!.docs[index]["tile"], salary: ss.data!.docs[index]["salary"],
+                                         WorkerJobDetails(location: ss.data!.docs[index]["jobArea"], vacancy: ss.data!.docs[index]["vacancy"], jobDetails: ss.data!.docs[index]["Details"], jobTitle: ss.data!.docs[index]["tile"], salary: ss.data!.docs[index]["salary"], jobId: ss.data!.docs[index]["job_post_id"]
 
 
 

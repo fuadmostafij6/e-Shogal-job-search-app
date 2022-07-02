@@ -24,23 +24,27 @@ class _RegisteredWithEmailState extends State<RegisteredWithEmail> {
    GlobalKey<NavigatorState>();
 
 static const jobTypeList = ['worker', 'employee'];
-String selectedJobType = jobTypeList.first;
+String selectedJobType = "";
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final nameController = TextEditingController();
+  final phoneNoController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   bool? reg;
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-  Future<void> addUser(String uid, String? name, String type){
+  Future<void> addUser(String uid ){
 
     return users
         .doc(uid)
         .set({
       'uid': uid,
-      'name': name,
-      'type': type
+      'name': nameController.text,
+      'type': selectedJobType,
+      'phone':phoneNoController.text
     })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -51,17 +55,20 @@ String selectedJobType = jobTypeList.first;
     try{
       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((value) =>{
         if(value.user!.uid.isNotEmpty){
-          Navigator.push(context,MaterialPageRoute(builder: (context)=> WorkerDashboardScreen()) ),
 
-          // if(selectedJobType=='employee'){
-          //   Navigator.push(context,MaterialPageRoute(builder: (context)=> EmployerDashBoardScreen()) )
-          //
-          //
-          //
-          // }
-          // else if(selectedJobType=='worker'){
-          //
-          // },
+
+
+          if(selectedJobType=='employee'){
+            addUser(FirebaseAuth.instance.currentUser!.uid),
+            Navigator.push(context,MaterialPageRoute(builder: (context)=> EmployerDashBoardScreen()) )
+
+
+
+          }
+          else if(selectedJobType=='worker'){
+            addUser(FirebaseAuth.instance.currentUser!.uid),
+            Navigator.push(context,MaterialPageRoute(builder: (context)=> WorkerDashboardScreen()) )
+          },
 
 
 
@@ -250,6 +257,157 @@ if(reg==true){
                       child: TextFormField(
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.text,
+                        controller: nameController,
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return "your Name is empty";
+                          }
+                          else if(val.length<5){
+                            return "Name must be 4 digit";
+
+                          }
+                          return null;
+                        },
+                        enableSuggestions: true,
+                        decoration: InputDecoration(
+                          focusColor: Colors.white,
+                          filled: true,
+
+                          //add prefix icon
+                          suffixIcon: IconButton(
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() => {
+                                FocusScope.of(context).unfocus(),
+                                nameController.text = ""
+                              });
+                            },
+                          ),
+
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.transparent, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.transparent, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.transparent, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          fillColor: Colors.white,
+
+                          hintText: "Put Your Name Here",
+
+                          //make hint text
+                          hintStyle: TextStyle(
+                            color: Colors.green[900],
+                            fontSize: 18,
+                            fontFamily: "verdana_regular",
+                            fontWeight: FontWeight.bold,
+                          ),
+
+                          labelText: 'Your Name',
+
+                          labelStyle: TextStyle(
+                            color: Colors.green[900],
+                            fontSize: 18,
+                            fontFamily: "verdana_regular",
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.phone,
+                        controller: phoneNoController,
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return "your Phone no is empty";
+                          }
+
+                          return null;
+                        },
+                        enableSuggestions: true,
+                        decoration: InputDecoration(
+                          focusColor: Colors.white,
+                          filled: true,
+
+                          //add prefix icon
+                          suffixIcon: IconButton(
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() => {
+                                FocusScope.of(context).unfocus(),
+                                phoneNoController.text = ""
+                              });
+                            },
+                          ),
+
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.transparent, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.transparent, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.transparent, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          fillColor: Colors.white,
+
+                          hintText: "Put Your Phone No Here",
+
+                          //make hint text
+                          hintStyle: TextStyle(
+                            color: Colors.green[900],
+                            fontSize: 18,
+                            fontFamily: "verdana_regular",
+                            fontWeight: FontWeight.bold,
+                          ),
+
+                          labelText: 'Your Phone',
+
+                          labelStyle: TextStyle(
+                            color: Colors.green[900],
+                            fontSize: 18,
+                            fontFamily: "verdana_regular",
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.text,
                         controller: passwordController,
                         validator: (val) {
                           if (val!.isEmpty) {
@@ -285,11 +443,11 @@ if(reg==true){
                                 color: Colors.transparent, width: 1.0),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.transparent, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.transparent, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
                                 color: Colors.transparent, width: 1.0),
@@ -326,10 +484,10 @@ if(reg==true){
                       child: TextFormField(
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.text,
-                        controller: passwordController,
+                        controller: confirmPasswordController,
                         validator: (val) {
-                          if (val!.isEmpty) {
-                            return "your password is empty";
+                          if (confirmPasswordController.text != passwordController.text) {
+                            return "your confirm password is not match";
                           }
                           return null;
                         },
@@ -347,7 +505,7 @@ if(reg==true){
                             onPressed: () {
                               setState(() => {
                                 FocusScope.of(context).unfocus(),
-                                passwordController.text = ""
+                                confirmPasswordController.text = ""
                               });
                             },
                           ),
@@ -370,7 +528,7 @@ if(reg==true){
                           //make hint text
                           hintStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),
@@ -379,7 +537,7 @@ if(reg==true){
 
                           labelStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),
@@ -403,7 +561,7 @@ if(reg==true){
                             child: RadioListTile<String>(value: e, title: Text(e) ,groupValue: selectedJobType, onChanged: (value){
                               setState(()=>{
                                 selectedJobType = value!,
-                                print(selectedJobType)
+
                               }
                               );
                               

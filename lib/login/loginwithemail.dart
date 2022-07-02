@@ -22,6 +22,8 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((value) => 
       {
         if(value.user!.uid.isNotEmpty){
+
+
           Navigator.push(context,MaterialPageRoute(builder: (context)=> WorkerDashboardScreen()) ),
 
     Fluttertoast.showToast(
