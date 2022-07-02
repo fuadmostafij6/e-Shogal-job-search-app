@@ -40,7 +40,7 @@ class _EditJobPostState extends State<EditJobPost> {
   Future<void> editJobPost( String? jobTitle, String jobDetails,String typeOfEmployment, String jobArea, String lan, String long, String deadline, String joining,String salary, String vacancy  ) {
 
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    final myJob =jobPost.doc(uid).collection("my_job").doc(widget.postId);
+    final myJob =jobPost.doc(widget.postId);
     return myJob
         .update({
       'job_post_id': myJob.id,
@@ -91,6 +91,8 @@ class _EditJobPostState extends State<EditJobPost> {
       deadLineController = widget.deadlineDate,
       joiningController =widget.joiningDate,
       counter = int.parse(widget.count),
+
+      print(widget.postId)
 
 
     });

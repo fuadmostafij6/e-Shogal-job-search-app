@@ -31,7 +31,7 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
   Future<void> addJobPost( String? jobTitle, String jobDetails,String typeOfEmployment, String jobArea, String lan, String long, String deadline, String joining,String salary, String vacancy  ) {
 
      final uid = FirebaseAuth.instance.currentUser!.uid;
-     final myJob =jobPost.doc(uid).collection("my_job").doc();
+     final myJob =jobPost.doc();
     return myJob
         .set({
       'job_post_id': myJob.id,
