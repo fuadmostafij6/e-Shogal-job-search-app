@@ -102,9 +102,10 @@ if(reg==true){
                 height: size.height * 0.3,
                 width: size.width*0.9-10,
                 decoration: BoxDecoration(
-                    color: Colors.green,
+                 
                     borderRadius: BorderRadius.circular(10),
                     shape: BoxShape.rectangle),
+                child: Image.asset("assets/images/logo.png",height: 50,width: double.infinity,),
               ),
             ),
             const SizedBox(
@@ -127,7 +128,7 @@ if(reg==true){
                       "Registered With E-mail",
                       style: TextStyle(
                           color: Colors.green[900],
-                          fontSize: 32.0,
+                          fontSize: 24.0,
                           fontWeight: FontWeight.w900),
                     ),
                     const SizedBox(
@@ -191,7 +192,7 @@ if(reg==true){
                           //make hint text
                           hintStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),
@@ -200,7 +201,7 @@ if(reg==true){
 
                           labelStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),
@@ -267,7 +268,7 @@ if(reg==true){
                           //make hint text
                           hintStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),
@@ -276,7 +277,7 @@ if(reg==true){
 
                           labelStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),

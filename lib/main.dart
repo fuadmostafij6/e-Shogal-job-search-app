@@ -1,9 +1,11 @@
 import 'package:eshogal/login/loginwithemail.dart';
 import 'package:eshogal/login/signup_screen.dart';
 import 'package:eshogal/screens/creatjobScreen.dart';
+import 'package:eshogal/screens/spalash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'screens/employer_dashboard_screen.dart';
 import 'screens/user_admin_screen.dart';
@@ -29,14 +31,14 @@ class MyApp extends StatelessWidget {
     return
 
 
-      MaterialApp(
+      GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
 
         primarySwatch: Colors.blue,
       ),
-      home:const LoginWithEmail()
+      home:const SplashScreen22()
     );
   }
 }

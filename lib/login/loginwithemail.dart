@@ -61,14 +61,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
               height: size.height * 0.1,
             ),
             Center(
-              child: Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(10),
-                    shape: BoxShape.rectangle),
-              ),
+              child: Image.asset("assets/images/logo.png"),
             ),
             const SizedBox(
               height: 50.0,
@@ -90,7 +83,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                       "Login with E-mail",
                       style: TextStyle(
                           color: Colors.green[900],
-                          fontSize: 32.0,
+                          fontSize: 24.0,
                           fontWeight: FontWeight.w900),
                     ),
                     const SizedBox(
@@ -154,7 +147,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                           //make hint text
                           hintStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),
@@ -163,7 +156,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
 
                           labelStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),
@@ -226,7 +219,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                           //make hint text
                           hintStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),
@@ -235,7 +228,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
 
                           labelStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),
