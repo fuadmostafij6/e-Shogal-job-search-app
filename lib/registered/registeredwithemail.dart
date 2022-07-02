@@ -4,11 +4,14 @@ import 'package:eshogal/screens/dashboard_screen.dart';
 import 'package:eshogal/screens/employer_dashboard_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../login/loginwithemail.dart';
 import '../login/loginwithphone.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../screens/worker_dashboard.dart';
 class RegisteredWithEmail extends StatefulWidget {
   const RegisteredWithEmail({Key? key}) : super(key: key);
 
@@ -47,8 +50,33 @@ String selectedJobType = jobTypeList.first;
     reg = false;
     try{
       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((value) =>{
+        if(value.user!.uid.isNotEmpty){
+          Navigator.push(context,MaterialPageRoute(builder: (context)=> WorkerDashboardScreen()) ),
 
-        addUser(value.user!.uid,value.user!.displayName,selectedJobType)
+          // if(selectedJobType=='employee'){
+          //   Navigator.push(context,MaterialPageRoute(builder: (context)=> EmployerDashBoardScreen()) )
+          //
+          //
+          //
+          // }
+          // else if(selectedJobType=='worker'){
+          //
+          // },
+
+
+
+
+          Fluttertoast.showToast(
+              msg: "Registration Successfully",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+          )
+        }
+
 
       }
 
@@ -63,9 +91,15 @@ String selectedJobType = jobTypeList.first;
          setState(()=>{
          reg = false
          });
-         showDialog(context: context, builder: (context)=>Center(
-           child: Text(e.toString()),
-         ));
+         Fluttertoast.showToast(
+             msg: "Something wrong",
+             toastLength: Toast.LENGTH_SHORT,
+             gravity: ToastGravity.CENTER,
+             timeInSecForIosWeb: 1,
+             backgroundColor: Colors.red,
+             textColor: Colors.white,
+             fontSize: 16.0
+         );
 
       print(e);
        }
@@ -368,7 +402,8 @@ if(reg==true){
                           return Expanded(
                             child: RadioListTile<String>(value: e, title: Text(e) ,groupValue: selectedJobType, onChanged: (value){
                               setState(()=>{
-                                selectedJobType = value!
+                                selectedJobType = value!,
+                                print(selectedJobType)
                               }
                               );
                               

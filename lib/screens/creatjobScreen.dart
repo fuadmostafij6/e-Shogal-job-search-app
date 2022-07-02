@@ -51,8 +51,26 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
 
 
     })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+        .then((value) =>  Fluttertoast.showToast(
+        msg: "Job Post Successfully",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    ))
+        .catchError((error) =>
+        Fluttertoast.showToast(
+            msg: "Something Wrong",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        ));
+
   }
   Future<void> getLocation()async{
   LocationPermission permission = await Geolocator.requestPermission();

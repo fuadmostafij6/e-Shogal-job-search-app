@@ -1,8 +1,9 @@
 import 'package:eshogal/screens/employer_dashboard_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../registered/registeredwithemail.dart';
+import '../screens/worker_dashboard.dart';
 import 'loginwithphone.dart';
 class LoginWithEmail extends StatefulWidget {
   const LoginWithEmail({Key? key}) : super(key: key);
@@ -18,21 +19,40 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
   Future signIn() async{
 
     try{
-      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).whenComplete(() =>   Future.delayed(Duration.zero).then((_) {
-        Navigator.push(context,MaterialPageRoute(builder:(context)=> const EmployerDashBoardScreen()));
-      }));
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((value) => 
+      {
+        if(value.user!.uid.isNotEmpty){
+          Navigator.push(context,MaterialPageRoute(builder: (context)=> WorkerDashboardScreen()) ),
+
+    Fluttertoast.showToast(
+    msg: "Login Successfully",
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.CENTER,
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.red,
+    textColor: Colors.white,
+    fontSize: 16.0
+    )
+        }
+      }
+      );
+
 
 
     }
     on FirebaseAuthException catch (e){
 
-      setState(()=>{
 
-      });
-      showDialog(context: context, builder: (context)=>Center(
-        child: Text(e.toString()),
-      ));
 
+      Fluttertoast.showToast(
+          msg: "Something wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
       print(e);
     }
 

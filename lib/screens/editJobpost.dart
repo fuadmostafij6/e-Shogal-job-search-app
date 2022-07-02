@@ -60,8 +60,22 @@ class _EditJobPostState extends State<EditJobPost> {
 
 
     })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+        .then((value) =>  Fluttertoast.showToast(
+        msg: "Update Successfully",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0)
+        .catchError((error) =>  Fluttertoast.showToast(
+        msg: "Something Wrong",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0)));
   }
 
   double? lan;
