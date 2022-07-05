@@ -567,6 +567,8 @@ double ?long;
 
                       ),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: jobTypeList.map((e) {
                           return Expanded(
                             child: RadioListTile<String>(value: e, title: Text(e) ,groupValue: selectedJobType, onChanged: (value){

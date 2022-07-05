@@ -27,12 +27,26 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
       for (int i = 0; i < qn.docs.length; i++) {
         if (qn.docs[i]["uid"] == uid) {
           setState(() => {
-                userDataList.add({
-                  "name": qn.docs[i]["name"],
-                  "phone": qn.docs[i]["phone"],
-                  "uid": qn.docs[i]["uid"],
-                  "type":qn.docs[i]["type"]
-                })
+
+            qn.docs[i]["type"] == "employee"
+                ? Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        EmployerDashBoardScreen()))
+                : Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        WorkerDashboardScreen())),
+                //
+                // userDataList.add({
+                //
+                //   // "name": qn.docs[i]["name"],
+                //   // "phone": qn.docs[i]["phone"],
+                //   // "uid": qn.docs[i]["uid"],
+                //   // "type":qn.docs[i]["type"]
+                // })
               });
         }
       }
@@ -53,20 +67,6 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                 if (value.user!.uid.isNotEmpty)
                   {
                     fetchWorkerData(value.user!.uid),
-                    if (userDataList.isNotEmpty)
-                      {
-                        userDataList[0]["type"] == "employee"
-                            ? Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        EmployerDashBoardScreen()))
-                            : Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        WorkerDashboardScreen())),
-                      },
                     setState(()=>buttonLoading=false),
                     Fluttertoast.showToast(
                         msg: "Login Successfully",

@@ -5,6 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:async';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class WorkerJobDetails extends StatefulWidget {
   final String jobTitle;
   final String jobDetails;
@@ -13,7 +16,9 @@ class WorkerJobDetails extends StatefulWidget {
   final String salary;
   final String jobId;
   final String postedBy;
-  const WorkerJobDetails({Key? key, required this.jobTitle, required this.jobDetails, required this.location, required this.vacancy, required this.salary, required this.postedBy, required this.jobId}) : super(key: key);
+  final String lat;
+  final String long;
+  const WorkerJobDetails({Key? key, required this.jobTitle, required this.jobDetails, required this.location, required this.vacancy, required this.salary, required this.postedBy, required this.jobId, required this.lat, required this.long}) : super(key: key);
 
   @override
   State<WorkerJobDetails> createState() => _WorkerJobDetailsState();
@@ -25,6 +30,18 @@ class _WorkerJobDetailsState extends State<WorkerJobDetails> {
   String? phone;
   String? name;
   final uid = FirebaseAuth.instance.currentUser!.uid;
+  Completer<GoogleMapController> _controller = Completer();
+
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+
+  static final CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
   fetchWorkerData() async {
   QuerySnapshot qn = await FirebaseFirestore.instance.collection("users").get();
     setState(() {
@@ -110,8 +127,6 @@ setState(()=>{
               Expanded(
                 child: Column(
                   children: [
-                    name==null?
-                    Text(""):Text(name!),
 
                     InkWell(
                       onTap: (){
@@ -420,6 +435,14 @@ SizedBox(height: 20.0,),
             ),
           ),
           SizedBox(height: 20.0,),
+
+          GoogleMap(
+            mapType: MapType.hybrid,
+            initialCameraPosition: _kGooglePlex,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+          ),
           TextButton(
               style: TextButton.styleFrom(
                 padding: EdgeInsets.fromLTRB(15, 20, 15, 20),

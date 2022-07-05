@@ -71,6 +71,8 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                             salary:data["salary"],
                             jobId: data["job_post_id"],
                             postedBy: data["posted_by"],
+                            lat: data["lat"],
+                            long: data["long"],
                           )));
             FirebaseFirestore.instance.collection("users").
             doc(FirebaseAuth.instance.currentUser!.uid).collection("nearby_job")
@@ -269,7 +271,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                            jobTitle: ss.data!.docs[index]["tile"],
                                            salary: ss.data!.docs[index]["salary"],
                                            jobId: ss.data!.docs[index]["job_post_id"],
-                                           postedBy: ss.data!.docs[index]["posted_by"],
+                                           postedBy: ss.data!.docs[index]["posted_by"], long: ss.data!.docs[index]["long"], lat: ss.data!.docs[index]["lat"],
 
 
 

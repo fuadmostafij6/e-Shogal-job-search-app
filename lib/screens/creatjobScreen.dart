@@ -583,7 +583,7 @@ return Scaffold(
                         ));
                       });
                       Get.defaultDialog(
-                        title: "Seleck Distance",
+                        title: "Select Distance",
                         content: Column(
                           children: items,
                         )
@@ -706,107 +706,114 @@ return Scaffold(
                 const SizedBox(
                   height: 20.0,
                 ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      const Text(
-                        "Deadline",
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.64,
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.green.shade500,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10.0, vertical: 22.0),
-                            ),
-                            onPressed: () async{
-                              DateTime? newDeadline = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime(2050));
 
-                              if(newDeadline==null) return;
-                              setState(()=>{
-                                deadLineController = "${newDeadline.day}-${newDeadline.month}-${newDeadline.year}"
-                              });
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children:  [
-                                const Icon(
-                                  Icons.date_range,
-                                  size: 30,
-                                  color: Colors.white,
+                selectedJobType !='Hourly'?
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          const Text(
+                            "Deadline",
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.64,
+                            child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.green.shade500,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0, vertical: 22.0),
                                 ),
-                                Text(
-                                  deadLineController,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                )
-                              ],
-                            )),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      const Text(
-                        "Joining",
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
+                                onPressed: () async{
+                                  DateTime? newDeadline = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime(2050));
+
+                                  if(newDeadline==null) return;
+                                  setState(()=>{
+                                    deadLineController = "${newDeadline.day}-${newDeadline.month}-${newDeadline.year}"
+                                  });
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children:  [
+                                    const Icon(
+                                      Icons.date_range,
+                                      size: 30,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      deadLineController,
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    )
+                                  ],
+                                )),
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.64,
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.green.shade500,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10.0, vertical: 22.0),
-                            ),
-                            onPressed: () async{
-                              DateTime? newJoining = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime(2050));
-
-                              if(newJoining==null) return;
-                              setState(()=>{
-                                joiningController = "${newJoining.day}-${newJoining.month}-${newJoining.year}"
-                              });
-
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children:  [
-                                const Icon(
-                                  Icons.date_range,
-                                  size: 30,
-                                  color: Colors.white,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          const Text(
+                            "Joining",
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.64,
+                            child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.green.shade500,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0, vertical: 22.0),
                                 ),
-                                Text(
-                                  joiningController,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                )
-                              ],
-                            )),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
+                                onPressed: () async{
+                                  DateTime? newJoining = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime(2050));
+
+                                  if(newJoining==null) return;
+                                  setState(()=>{
+                                    joiningController = "${newJoining.day}-${newJoining.month}-${newJoining.year}"
+                                  });
+
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children:  [
+                                    const Icon(
+                                      Icons.date_range,
+                                      size: 30,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      joiningController,
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    )
+                                  ],
+                                )),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                  ],
+                ): SizedBox(),
+
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                   child: Container(
@@ -860,15 +867,44 @@ return Scaffold(
 
                             });
                             if(permission.name.isNotEmpty){
-                              addJobPost(jobTitleController.text,
-                                  jobTitleDetails.text, selectedJobType,
-                                  selectedArea,lan.toString(),long.toString(),
-                                  deadLineController,joiningController,
-                                  salaryController.text.toString(),
-                                  counter.toString()
-                                  ,
-                                tarGetArea: double.parse(selectKm)
-                              );
+                              if(selectedJobType=="Hourly")
+                                {
+
+                                  addJobPost(jobTitleController.text,
+                                      jobTitleDetails.text, selectedJobType,
+                                      "",lan.toString(),long.toString(),
+                                      "","",
+                                      salaryController.text.toString(),
+                                      counter.toString()
+                                      ,
+                                      tarGetArea: double.parse(selectKm)
+                                  );
+                                }
+                              else if( selectedArea =="Job Area"){
+                                Fluttertoast.showToast(
+                                    msg: "Please Select your job Area",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
+
+                              }
+
+                              else{
+
+                                addJobPost(jobTitleController.text,
+                                    jobTitleDetails.text, selectedJobType,
+                                    selectedArea,lan.toString(),long.toString(),
+                                    deadLineController,joiningController,
+                                    salaryController.text.toString(),
+                                    counter.toString()
+                                    ,
+                                    tarGetArea: double.parse(selectKm)
+                                );
+                              }
 
                             }
                             else{

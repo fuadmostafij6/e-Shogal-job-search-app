@@ -2,10 +2,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eshogal/screens/user_admin_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart'as UrlLauncher;
+import 'package:url_launcher/url_launcher.dart';
 
 class EmployerJobCandidateScreen extends StatefulWidget {
   final String jobTitle;
   final String jobPostId;
+
   const EmployerJobCandidateScreen({Key? key, required this.jobTitle, required this.jobPostId}) : super(key: key);
 
   @override
@@ -220,15 +223,17 @@ class _EmployerJobCandidateScreenState extends State<EmployerJobCandidateScreen>
                                                       FontWeight
                                                           .bold)),
                                                   SizedBox(width:15.0 ,),
-                                                  Text(
-                                                    "${ss.data!.docs[index]["worker_phone"]}",
-                                                    style: const TextStyle(
+                                                  TextButton(
+                                                    child: Text("${ss.data!.docs[index]["worker_phone"]}", style: const TextStyle(
                                                         fontSize: 17,
                                                         color: Colors
                                                             .black,
                                                         fontWeight:
                                                         FontWeight
-                                                            .bold),
+                                                            .bold)),
+                                                    onPressed: () {
+                                                      launchUrl("tel://21213123123");
+                                                    },
                                                   ),
 
                                                 ],
@@ -254,5 +259,13 @@ class _EmployerJobCandidateScreenState extends State<EmployerJobCandidateScreen>
         ],
       ),
     );
+
+  }
+  void launchUrl(String url) async {
+    if (await canLaunch(url)) {
+      launch(url);
+    } else {
+      throw "Could not launch $url";
+    }
   }
 }
