@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eshogal/screens/employer_dashboard_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../registered/registeredwithemail.dart';
 import '../screens/worker_dashboard.dart';
 import 'loginwithphone.dart';
+
 class LoginWithEmail extends StatefulWidget {
   const LoginWithEmail({Key? key}) : super(key: key);
 
@@ -16,36 +18,67 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Future signIn() async{
-
-    try{
-      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((value) => 
-      {
-        if(value.user!.uid.isNotEmpty){
-
-
-          Navigator.push(context,MaterialPageRoute(builder: (context)=> WorkerDashboardScreen()) ),
-
-    Fluttertoast.showToast(
-    msg: "Login Successfully",
-    toastLength: Toast.LENGTH_SHORT,
-    gravity: ToastGravity.CENTER,
-    timeInSecForIosWeb: 1,
-    backgroundColor: Colors.red,
-    textColor: Colors.white,
-    fontSize: 16.0
-    )
+  List userDataList = [];
+  bool buttonLoading = false;
+  fetchWorkerData(String uid) async {
+    QuerySnapshot qn =
+        await FirebaseFirestore.instance.collection("users").get();
+    setState(() {
+      for (int i = 0; i < qn.docs.length; i++) {
+        if (qn.docs[i]["uid"] == uid) {
+          setState(() => {
+                userDataList.add({
+                  "name": qn.docs[i]["name"],
+                  "phone": qn.docs[i]["phone"],
+                  "uid": qn.docs[i]["uid"],
+                  "type":qn.docs[i]["type"]
+                })
+              });
         }
       }
-      );
+    });
 
+    return qn.docs;
+  }
 
+  Future signIn() async {
+    setState(()=>buttonLoading=true);
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim())
+          .then((value) => {
 
-    }
-    on FirebaseAuthException catch (e){
-
-
-
+                if (value.user!.uid.isNotEmpty)
+                  {
+                    fetchWorkerData(value.user!.uid),
+                    if (userDataList.isNotEmpty)
+                      {
+                        userDataList[0]["type"] == "employee"
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EmployerDashBoardScreen()))
+                            : Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        WorkerDashboardScreen())),
+                      },
+                    setState(()=>buttonLoading=false),
+                    Fluttertoast.showToast(
+                        msg: "Login Successfully",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0)
+                  }
+              });
+    } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(
           msg: "Something wrong",
           toastLength: Toast.LENGTH_SHORT,
@@ -53,8 +86,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
       print(e);
     }
 
@@ -62,16 +94,27 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
     //   Navigator.pop(context);
     // });
     //
-
-
   }
+  @override
+  void initState() {
+  userDataList.clear();
 
+    super.initState();
+  }
+  @override
+  void dispose() {
+   userDataList.clear();
+    // ignore: avoid_print
+    print('Dispose used');
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.green[900],
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.green[900],
         elevation: 0,
       ),
@@ -127,17 +170,17 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.emailAddress,
                         controller: emailController,
-                        validator: (val) {  bool emailValid = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(val!);
-                        if (emailValid == false) {
-                          return "your email number is not valid";
-                        } else if (val.isEmpty) {
-                          return "your email number is empty";
-                        }
-                        return null;
+                        validator: (val) {
+                          bool emailValid = RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(val!);
+                          if (emailValid == false) {
+                            return "your email number is not valid";
+                          } else if (val.isEmpty) {
+                            return "your email number is empty";
+                          }
+                          return null;
                         },
-
                         enableSuggestions: true,
                         decoration: InputDecoration(
                           focusColor: Colors.white,
@@ -149,7 +192,6 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                           ),
 
                           //add prefix icon
-
 
                           border: OutlineInputBorder(
                             borderSide: const BorderSide(
@@ -217,9 +259,9 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                             ),
                             onPressed: () {
                               setState(() => {
-                                FocusScope.of(context).unfocus(),
-                                passwordController.text = ""
-                              });
+                                    FocusScope.of(context).unfocus(),
+                                    passwordController.text = ""
+                                  });
                             },
                           ),
 
@@ -273,28 +315,50 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                         ),
                         child: SizedBox(
                           height: 30,
-                          width: size.width*0.7,
-                          child:const Center(child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24.0),)),
-                        )
-                    ),
+                          width: size.width * 0.7,
+                          child: buttonLoading?Center(child: CircularProgressIndicator()):const Center(
+                              child: Text(
+                            "Login",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24.0),
+                          )),
+                        )),
                     const SizedBox(
                       height: 20.0,
                     ),
                     InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegisteredWithEmail()));
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RegisteredWithEmail()));
                         },
-
-                        child: Text("Registered With Email", style: TextStyle(color: Colors.green[800], fontSize: 20.0, fontWeight: FontWeight.bold,decoration: TextDecoration.underline,),)
-
+                        child: Text(
+                          "Registered With Email",
+                          style: TextStyle(
+                            color: Colors.green[800],
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          ),
+                        )),
+                    const SizedBox(
+                      height: 10.0,
                     ),
-                   const SizedBox(height: 10.0,),
                     InkWell(
-                        child: Text("Registered With Phone", style: TextStyle(color: Colors.green[800], fontSize: 20.0, fontWeight: FontWeight.bold,decoration: TextDecoration.underline,),)
-
-                    ),
-
-                   const SizedBox(
+                        child: Text(
+                      "Registered With Phone",
+                      style: TextStyle(
+                        color: Colors.green[800],
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                      ),
+                    )),
+                    const SizedBox(
                       height: 20.0,
                     )
                   ],

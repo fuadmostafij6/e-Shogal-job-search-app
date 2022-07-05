@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/route_manager.dart';
+import 'package:get/state_manager.dart';
 
 class CreateJobScreen extends StatefulWidget {
   const CreateJobScreen({Key? key}) : super(key: key);
@@ -15,8 +17,10 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
   final _formKey = GlobalKey<FormState>();
   List<String> items = ["Select Type of Employment", "Hourly", "Monthly"];
   List<String> areas = ["Job Area", "Riad"];
+  List<String> listOfKm = ["1","2","3","4","5","6","7","8","9","10"];
   String selectedJobType = "Select Type of Employment";
   String selectedArea = "Job Area";
+  String selectKm = "0";
   int counter = 1;
   double? lan;
   double ?long;
@@ -25,41 +29,64 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
   final salaryController = TextEditingController();
   String deadLineController = "MM/DD/YYY";
   String joiningController = "MM/DD/YYY";
-
+List userDataList =[];
   CollectionReference jobPost = FirebaseFirestore.instance.collection('job_post');
+  fetchWorkerData() async {
+    QuerySnapshot qn =
+    await FirebaseFirestore.instance.collection("users").get();
+    setState(() {
+      for (int i = 0; i < qn.docs.length; i++) {
+        if (qn.docs[i]["uid"] == FirebaseAuth.instance.currentUser!.uid) {
+          setState(() => {
+            userDataList.add({
+              "name": qn.docs[i]["name"],
+              "phone": qn.docs[i]["phone"],
+              "uid": qn.docs[i]["uid"],
+              "type":qn.docs[i]["type"]
+            })
+          });
+        }
+      }
+    });
 
-  Future<void> addJobPost( String? jobTitle, String jobDetails,String typeOfEmployment, String jobArea, String lan, String long, String deadline, String joining,String salary, String vacancy  ) {
+    return qn.docs;
+  }
+  Future<void> addJobPost( String? jobTitle, String jobDetails,
+      String typeOfEmployment, String jobArea, String lan,
+      String long, String deadline, String joining,String salary,
+      String vacancy , {double tarGetArea=0} ) {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
 
-     final uid = FirebaseAuth.instance.currentUser!.uid;
-     final myJob =jobPost.doc();
-    return myJob
-        .set({
+    final myJob = jobPost.doc();
+    var jobDetailsData = {
       'job_post_id': myJob.id,
+      'target_area': tarGetArea,
       'uid': uid,
       'publish': true,
       'tile': jobTitle,
       'Details': jobDetails,
-      'typeOfEmployment':typeOfEmployment,
-      'jobArea':jobArea,
-      'lan':lan,
-      'long':long,
+      'typeOfEmployment': typeOfEmployment,
+      'jobArea': jobArea,
+      'lan': lan,
+      'long': long,
       'deadline': deadline,
       'joining': joining,
       'salary': salary,
-      'vacancy': vacancy
-
-
-
-    })
-        .then((value) =>  Fluttertoast.showToast(
-        msg: "Job Post Successfully",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    ))
+      'vacancy': vacancy,
+      'posted_by': userDataList[0]["name"]
+    };
+    var res = myJob
+        .set(jobDetailsData)
+        .then((value) =>
+        Fluttertoast.showToast(
+            msg: "Job Post Successfully",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        ))
         .catchError((error) =>
         Fluttertoast.showToast(
             msg: "Something Wrong",
@@ -70,8 +97,64 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
             textColor: Colors.white,
             fontSize: 16.0
         ));
+    if(tarGetArea!=0)
+    pushWorkers(jobDetailsData);
+    return res;
+  }
+  pushWorkers(data){
+    CollectionReference usersRef =
+    FirebaseFirestore.instance.collection('users');
+
+
+   /* double lat = 0.0144927536231884;
+    double lon = 0.0181818181818182;
+    double lowerLat = userGeoPoint.latitude - (lat * distance);
+    double lowerLon = userGeoPoint.longitude - (lon * distance);
+
+    double greaterLat = userGeoPint.latitude + (lat * distance);
+    double greaterLon = userGeoPint.longitude + (lon * distance);
+
+    GeoPoint lesserGeopoint = GeoPoint(lowerLat, lowerLon);
+    GeoPoint greaterGeopoint = GeoPoint(greaterLat, greaterLon);
+    Query query = Firestore.instance
+        .collection(path)
+        .where("geoPoint.geopoint", isGreaterThan: lesserGeopoint)
+        .where("geoPoint.geopoint", isLessThan: greaterGeopoint)
+        .limit(limit);*/
+
+
+
+    usersRef
+        .where("type", isEqualTo: "worker")
+        .get().then((value) {
+
+          List<String> targetUsers=[];
+
+      for(var element in value.docs) {
+        var distanceinKm= (Geolocator.distanceBetween(double.parse(data["lan"]),
+            double.parse(data["long"]), element["lat"], element["long"]))/1000;
+
+        print("km__$distanceinKm");
+
+        if(distanceinKm<=data["target_area"]){
+          targetUsers.add(element.id);
+        }
+
+      }
+      targetUsers.forEach((element) {
+        Map<String, dynamic> tmpData={};
+        tmpData.addAll(data);
+        tmpData.addAll({"read": false});
+        usersRef.doc(element).collection("nearby_job").doc("last_job")
+            .set(tmpData);
+      });
+
+    });
 
   }
+
+
+
   Future<void> getLocation()async{
   LocationPermission permission = await Geolocator.requestPermission();
     var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -82,6 +165,15 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
 
     });
 }
+
+  @override
+  void initState() {
+
+    fetchWorkerData();
+    super.initState();
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -433,7 +525,8 @@ return Scaffold(
                   height: 20.0,
                 ),
                 selectedJobType != "Hourly"
-                    ? Padding(
+                    ?
+                Padding(
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                         child: Container(
                           width: MediaQuery.of(context).size.width * .5,
@@ -463,6 +556,57 @@ return Scaffold(
                 const SizedBox(
                   height: 20.0,
                 ),
+
+                if(selectedJobType == "Hourly")
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15,20),
+                  child: GestureDetector(
+                    onTap: (){
+                      List<Widget> items=[];
+                      listOfKm.forEach((element) {
+                        items.add(InkWell(
+                          onTap: (){
+                            selectKm =element;
+                            Get.back();
+                          },
+                          child: Container(
+
+                            width: double.infinity,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Material(
+
+                                child: Center(child: Text(element)),
+                              ),
+                            ),
+                          ),
+                        ));
+                      });
+                      Get.defaultDialog(
+                        title: "Seleck Distance",
+                        content: Column(
+                          children: items,
+                        )
+                      );
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * .5,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(selectKm=="0"?"Select Distance":selectKm+" KM"),
+                        )
+                      ),
+                    ),
+                  ),
+                ),
+
                 Row(
                   children: [
                     SizedBox(
@@ -705,7 +849,7 @@ return Scaffold(
                       style: TextButton.styleFrom(backgroundColor: Colors.green.shade900,   padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),),
 
                       onPressed: ()async{
-                        if(_formKey.currentState!.validate()){
+                        if(_formKey.currentState!.validate() && userDataList.isNotEmpty){
                           if(selectedJobType == "Hourly"){
                             LocationPermission permission = await Geolocator.requestPermission();
                             var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -716,7 +860,15 @@ return Scaffold(
 
                             });
                             if(permission.name.isNotEmpty){
-                              addJobPost(jobTitleController.text,jobTitleDetails.text, selectedJobType,selectedArea,lan.toString(),long.toString(), deadLineController,joiningController,salaryController.text.toString(), counter.toString());
+                              addJobPost(jobTitleController.text,
+                                  jobTitleDetails.text, selectedJobType,
+                                  selectedArea,lan.toString(),long.toString(),
+                                  deadLineController,joiningController,
+                                  salaryController.text.toString(),
+                                  counter.toString()
+                                  ,
+                                tarGetArea: double.parse(selectKm)
+                              );
 
                             }
                             else{

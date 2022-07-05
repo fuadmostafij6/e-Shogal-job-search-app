@@ -1,9 +1,12 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eshogal/screens/user_admin_screen.dart';
 import 'package:flutter/material.dart';
 
 class EmployerJobCandidateScreen extends StatefulWidget {
-  const EmployerJobCandidateScreen({Key? key}) : super(key: key);
+  final String jobTitle;
+  final String jobPostId;
+  const EmployerJobCandidateScreen({Key? key, required this.jobTitle, required this.jobPostId}) : super(key: key);
 
   @override
   State<EmployerJobCandidateScreen> createState() => _EmployerJobCandidateScreenState();
@@ -12,6 +15,7 @@ class EmployerJobCandidateScreen extends StatefulWidget {
 class _EmployerJobCandidateScreenState extends State<EmployerJobCandidateScreen> {
   @override
   Widget build(BuildContext context) {
+    var stream = FirebaseFirestore.instance.collection("apply").snapshots();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -124,72 +128,128 @@ class _EmployerJobCandidateScreenState extends State<EmployerJobCandidateScreen>
 
           const Text("Application On",style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
           const SizedBox(height: 14,),
-          const Text("Flutter Developer",style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
+           Text(widget.jobTitle,style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
+          StreamBuilder(
+              stream: stream,
+              builder:
+                  (BuildContext context, AsyncSnapshot<QuerySnapshot> ss) {
+                switch (ss.connectionState) {
+                  case ConnectionState.done:
 
-          Expanded(child: ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: 5,
-            itemBuilder: (_,context){
-              return GestureDetector(
-                onTap: (){
-                  Navigator.push(_, MaterialPageRoute(builder:(_)=> const UserAdminScreen() ));
-                },
-                child: Padding(
-                  padding:  const EdgeInsets.all(0.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                    //    color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(10.0)
-                    ),
-                    padding: const EdgeInsets.all(10.0),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0,top: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text("Abir Hasan",style: TextStyle(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w600),),
-                          SizedBox(height: 10,),
-                          // Row(
-                          //   children: [
-                          //     Row(
-                          //       children: [
-                          //         Text("Location :",style: TextStyle(fontSize: 14,color: Colors.black,fontWeight: FontWeight.bold),),
-                          //         SizedBox(width: 10,),
-                          //         Text("Badda Link Road ",style: TextStyle(fontSize: 14,color: Colors.black,fontWeight: FontWeight.w400),)
-                          //       ],
-                          //     ),
-                          //     Spacer(),
-                          //     Padding(
-                          //       padding: const EdgeInsets.only(right: 28.0),
-                          //       child: Row(
-                          //         children: [
-                          //           Text("Salary :",style: TextStyle(fontSize: 14,color: Colors.black,fontWeight: FontWeight.bold),),
-                          //           SizedBox(width: 10,),
-                          //           Text("40000 ",style: TextStyle(fontSize: 14,color: Colors.black,fontWeight: FontWeight.w400),)
-                          //         ],
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-                          // SizedBox(height: 10,),
-                          //
-                          // Row(
-                          //   children: [
-                          //     Text("Posted By :",style: TextStyle(fontSize: 14,color: Colors.black,fontWeight: FontWeight.bold),),
-                          //     SizedBox(width: 10,),
-                          //     Text("Abir hasan",style: TextStyle(fontSize: 14,color: Colors.black,fontWeight: FontWeight.w400),)
-                          //   ],
-                          // ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ))
+                  case ConnectionState.waiting:
+                    return Center(
+                      child: Text("wait"),
+                    );
+                  default:
+                    if (ss.hasData) {
+                      if (ss.data!.docs.length == 0) {
+                        return Center(
+                          child: Text("No data"),
+                        );
+                      } else {
+                        return Expanded(
+                            child: ListView.builder(
+                                itemCount: ss.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  var data = ss.data!.docs[index];
+
+                                  return data["job_post_id"] == widget.jobPostId
+                                      ? GestureDetector(
+                                    onTap: () {
+
+                                    },
+                                    child: Padding(
+                                      padding:
+                                      const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius:
+                                            BorderRadius.circular(
+                                                10.0)),
+                                        padding:
+                                        const EdgeInsets.all(10.0),
+                                        child: Padding(
+                                          padding:
+                                          const EdgeInsets.only(
+                                              left: 8.0, top: 10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment
+                                                .start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .start,
+                                                children: [
+                                                  Text("Name:",style: const TextStyle(
+                                                      fontSize: 17,
+                                                      color: Colors
+                                                          .black,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .bold)),
+                                                  SizedBox(width:15.0 ,),
+                                                  Text(
+                                                    "${ss.data!.docs[index]["worker_name"]}",
+                                                    style: const TextStyle(
+                                                        fontSize: 17,
+                                                        color: Colors
+                                                            .black,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold),
+                                                  ),
+
+                                                ],
+                                              ),
+                                              SizedBox(height: 20.0,),
+                                              Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .start,
+                                                children: [
+                                                  Text("Phone:",style: const TextStyle(
+                                                      fontSize: 17,
+                                                      color: Colors
+                                                          .black,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .bold)),
+                                                  SizedBox(width:15.0 ,),
+                                                  Text(
+                                                    "${ss.data!.docs[index]["worker_phone"]}",
+                                                    style: const TextStyle(
+                                                        fontSize: 17,
+                                                        color: Colors
+                                                            .black,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold),
+                                                  ),
+
+                                                ],
+                                              ),
+
+
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                      : SizedBox();
+                                }));
+                      }
+                    } else {
+                      return Text("");
+                    }
+                }
+              }),
+
 
         ],
       ),

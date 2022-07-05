@@ -12,7 +12,8 @@ class WorkerJobDetails extends StatefulWidget {
   final String vacancy;
   final String salary;
   final String jobId;
-  const WorkerJobDetails({Key? key, required this.jobTitle, required this.jobDetails, required this.location, required this.vacancy, required this.salary, required this.jobId}) : super(key: key);
+  final String postedBy;
+  const WorkerJobDetails({Key? key, required this.jobTitle, required this.jobDetails, required this.location, required this.vacancy, required this.salary, required this.postedBy, required this.jobId}) : super(key: key);
 
   @override
   State<WorkerJobDetails> createState() => _WorkerJobDetailsState();
@@ -381,7 +382,7 @@ SizedBox(height: 20.0,),
                           width: 10,
                         ),
                         Text(
-                          "Abir hasan",
+                          widget.postedBy,
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors

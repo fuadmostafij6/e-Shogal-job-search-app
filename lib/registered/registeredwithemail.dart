@@ -5,6 +5,7 @@ import 'package:eshogal/screens/employer_dashboard_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../login/loginwithemail.dart';
 import '../login/loginwithphone.dart';
@@ -33,10 +34,19 @@ String selectedJobType = "";
 
   final _formKey = GlobalKey<FormState>();
   bool? reg;
-
+double ?lat;
+double ?long;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-  Future<void> addUser(String uid ){
+  Future<void> addUser(String uid ) async{
+    LocationPermission permission = await Geolocator.requestPermission();
+    var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+    setState(()=>{
+      lat = position.latitude,
+      long = position.longitude
+
+    });
 
     return users
         .doc(uid)
@@ -44,11 +54,15 @@ String selectedJobType = "";
       'uid': uid,
       'name': nameController.text,
       'type': selectedJobType,
-      'phone':phoneNoController.text
+      'phone':phoneNoController.text,
+      'lat':lat,
+      'long':long
     })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
+
   }
+
   Future signUp() async{
 
     reg = false;
@@ -60,6 +74,7 @@ String selectedJobType = "";
 
           if(selectedJobType=='employee'){
             addUser(FirebaseAuth.instance.currentUser!.uid),
+
             Navigator.push(context,MaterialPageRoute(builder: (context)=> EmployerDashBoardScreen()) )
 
 
@@ -115,11 +130,7 @@ String selectedJobType = "";
     //   Navigator.pop(context);
     // });
     //
-if(reg==true){
-  Future.delayed(Duration.zero).then((_) {
-    Navigator.push(context,MaterialPageRoute(builder:(context)=> const EmployerDashBoardScreen()));
-  });
-}
+
 
   }
 

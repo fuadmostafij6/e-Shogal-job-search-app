@@ -20,7 +20,9 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
   deleteJob(String id) async {
     jobPost.doc(id).delete();
   }
-
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut().then((value) => Navigator.pop(context));
+  }
   Future<void> refresh() {
     return Future.delayed(const Duration(seconds: 2));
   }
@@ -38,6 +40,7 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
         centerTitle: true,
         title: Text("Employer DashBoard"),
         backgroundColor: Colors.grey[800],
+        automaticallyImplyLeading: false,
       ),
       body: RefreshIndicator(
         onRefresh: refresh,
@@ -216,7 +219,7 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (_) =>
-                                                          const EmployerJobCandidateScreen()));
+                                                           EmployerJobCandidateScreen( jobTitle: ss.data!.docs[index]["tile"], jobPostId: ss.data!.docs[index]["job_post_id"],)));
                                             },
                                             child: Padding(
                                               padding:
@@ -396,7 +399,7 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
                                                             width: 10,
                                                           ),
                                                           Text(
-                                                            "Abir hasan",
+                                                            "Me",
                                                             style: TextStyle(
                                                                 fontSize: 14,
                                                                 color: Colors
@@ -421,6 +424,14 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
                       }
                   }
                 }),
+
+
+            TextButton(
+                style: TextButton.styleFrom(padding: EdgeInsets.fromLTRB(20, 15, 20, 15), backgroundColor: Colors.green.shade900),
+                onPressed: (){
+                  _signOut();
+                  
+                }, child: Text("Logout", style: TextStyle(color: Colors.white),))
             // jobList.isEmpty? Center(child: CircularProgressIndicator(),):
             // Expanded(
             //

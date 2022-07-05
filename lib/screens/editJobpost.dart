@@ -1,4 +1,6 @@
 
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eshogal/screens/creatjobScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,6 +40,8 @@ class _EditJobPostState extends State<EditJobPost> {
   final salaryController = TextEditingController();
   String deadLineController = "MM/DD/YYY";
   String joiningController = "MM/DD/YYY";
+  double? lan;
+  double? long;
   CollectionReference jobPost = FirebaseFirestore.instance.collection('job_post');
 
   Future<void> editJobPost( String jobTitle, String jobDetails,String typeOfEmployment, String jobArea, String lan, String long, String deadline, String joining,String salary, String vacancy  ) {
@@ -264,476 +268,509 @@ class _EditJobPostState extends State<EditJobPost> {
             const SizedBox(
               height: 15.0,
             ),
-            ListView(
-              shrinkWrap: true,
-              primary: false,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: TextFormField(
-                    controller: jobTitleController,
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.text,
-                    // controller: phoneController,
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return "your Job title is empty";
-                      }
-                      return null;
-                    },
-                    enableSuggestions: true,
-                    decoration: InputDecoration(
-                      focusColor: Colors.white,
-                      filled: true,
-                      alignLabelWithHint: false,
-                      //add prefix icon
-                      // suffixIcon: IconButton(
-                      //   icon: const Icon(
-                      //     Icons.close,
-                      //     color: Colors.grey,
-                      //   ),
-                      //   onPressed: () {
-                      //     setState(() => {
-                      //       FocusScope.of(context).unfocus(),
-                      //       // phoneController.text = ""
-                      //     });
-                      //   },
-                      // ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.transparent, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.transparent, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
 
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.transparent, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      fillColor: Colors.white,
+            Form(
+              key: _formKey,
+              child: ListView(
+                shrinkWrap: true,
+                primary: false,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: TextFormField(
+                      controller: jobTitleController,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.text,
+                      // controller: phoneController,
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "your Job title is empty";
+                        }
+                        return null;
+                      },
+                      enableSuggestions: true,
+                      decoration: InputDecoration(
+                        focusColor: Colors.white,
+                        filled: true,
+                        alignLabelWithHint: false,
+                        //add prefix icon
+                        // suffixIcon: IconButton(
+                        //   icon: const Icon(
+                        //     Icons.close,
+                        //     color: Colors.grey,
+                        //   ),
+                        //   onPressed: () {
+                        //     setState(() => {
+                        //       FocusScope.of(context).unfocus(),
+                        //       // phoneController.text = ""
+                        //     });
+                        //   },
+                        // ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Colors.transparent, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Colors.transparent, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
 
-                      hintText: "Wright Your Job position Here",
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Colors.transparent, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        fillColor: Colors.white,
 
-                      //make hint text
-                      hintStyle: TextStyle(
-                        color: Colors.green[900],
-                        fontSize: 22,
-                        fontFamily: "verdana_regular",
-                        fontWeight: FontWeight.bold,
-                      ),
+                        hintText: "Wright Your Job position Here",
 
-                      labelText: 'Job Title',
+                        //make hint text
+                        hintStyle: TextStyle(
+                          color: Colors.green[900],
+                          fontSize: 22,
+                          fontFamily: "verdana_regular",
+                          fontWeight: FontWeight.bold,
+                        ),
 
-                      labelStyle: TextStyle(
-                        color: Colors.green[900],
-                        fontSize: 20,
-                        fontFamily: "verdana_regular",
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 15.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: TextFormField(
-                    controller: jobTitleDetails,
-                    maxLines: 8,
-                    minLines: 7,
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.text,
-                    // controller: phoneController,
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return "your Job Details is empty";
-                      }
-                      return null;
-                    },
-                    enableSuggestions: true,
-                    decoration: InputDecoration(
-                      alignLabelWithHint: false,
-                      focusColor: Colors.white,
-                      filled: true,
+                        labelText: 'Job Title',
 
-                      //add prefix icon
-                      // suffixIcon: IconButton(
-                      //   icon: const Icon(
-                      //     Icons.close,
-                      //     color: Colors.grey,
-                      //   ),
-                      //   onPressed: () {
-                      //     setState(() => {
-                      //       FocusScope.of(context).unfocus(),
-                      //       // phoneController.text = ""
-                      //     });
-                      //   },
-                      // ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.transparent, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.transparent, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.transparent, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      fillColor: Colors.white,
-
-                      hintText: "Wright Your Job Details Here",
-
-                      //make hint text
-                      hintStyle: TextStyle(
-                        color: Colors.green[900],
-                        fontSize: 22,
-                        fontFamily: "verdana_regular",
-                        fontWeight: FontWeight.bold,
-                      ),
-
-                      labelText: 'Job Details',
-
-                      labelStyle: TextStyle(
-                        color: Colors.green[900],
-                        fontSize: 20,
-                        fontFamily: "verdana_regular",
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * .5,
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Center(
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: selectedJobType,
-                          isExpanded: true,
-                          items: items.map(Item).toList(),
-                          onChanged: (value) {
-                            setState(() => {selectedJobType = value!});
-                          },
-                          iconSize: 36,
-                          icon: Icon(Icons.arrow_drop_down),
+                        labelStyle: TextStyle(
+                          color: Colors.green[900],
+                          fontSize: 20,
+                          fontFamily: "verdana_regular",
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                selectedJobType != "Hourly"
-                    ? Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * .5,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Center(
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: selectedArea,
-                          isExpanded: true,
-                          items: areas.map(area).toList(),
-                          onChanged: (value) {
-                            setState(() => {selectedArea = value!});
-                          },
-                          iconSize: 36,
-                          icon: const Icon(Icons.arrow_drop_down),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: TextFormField(
+                      controller: jobTitleDetails,
+                      maxLines: 8,
+                      minLines: 7,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.text,
+                      // controller: phoneController,
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "your Job Details is empty";
+                        }
+                        return null;
+                      },
+                      enableSuggestions: true,
+                      decoration: InputDecoration(
+                        alignLabelWithHint: false,
+                        focusColor: Colors.white,
+                        filled: true,
+
+                        //add prefix icon
+                        // suffixIcon: IconButton(
+                        //   icon: const Icon(
+                        //     Icons.close,
+                        //     color: Colors.grey,
+                        //   ),
+                        //   onPressed: () {
+                        //     setState(() => {
+                        //       FocusScope.of(context).unfocus(),
+                        //       // phoneController.text = ""
+                        //     });
+                        //   },
+                        // ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Colors.transparent, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Colors.transparent, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Colors.transparent, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        fillColor: Colors.white,
+
+                        hintText: "Wright Your Job Details Here",
+
+                        //make hint text
+                        hintStyle: TextStyle(
+                          color: Colors.green[900],
+                          fontSize: 22,
+                          fontFamily: "verdana_regular",
+                          fontWeight: FontWeight.bold,
+                        ),
+
+                        labelText: 'Job Details',
+
+                        labelStyle: TextStyle(
+                          color: Colors.green[900],
+                          fontSize: 20,
+                          fontFamily: "verdana_regular",
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
-                )
-                    : const SizedBox(),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.65,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                        child: TextFormField(
-                          controller: salaryController,
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.text,
-                          // controller: phoneController,
-                          validator: (val) {
-                            if (val!.isEmpty) {
-                              return "your Salary is empty";
-                            }
-                            return null;
-                          },
-                          enableSuggestions: true,
-                          decoration: InputDecoration(
-                            focusColor: Colors.white,
-                            filled: true,
-                            alignLabelWithHint: false,
-                            //add prefix icon
-                            // suffixIcon: IconButton(
-                            //   icon: const Icon(
-                            //     Icons.close,
-                            //     color: Colors.grey,
-                            //   ),
-                            //   onPressed: () {
-                            //     setState(() => {
-                            //       FocusScope.of(context).unfocus(),
-                            //       // phoneController.text = ""
-                            //     });
-                            //   },
-                            // ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.transparent, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.transparent, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.transparent, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            fillColor: Colors.white,
-
-                            hintText: "Wright Your Job position Here",
-
-                            //make hint text
-                            hintStyle: TextStyle(
-                              color: Colors.green[900],
-                              fontSize: 22,
-                              fontFamily: "verdana_regular",
-                              fontWeight: FontWeight.bold,
-                            ),
-
-                            labelText: 'Salary',
-
-                            labelStyle: TextStyle(
-                              color: Colors.green[900],
-                              fontSize: 20,
-                              fontFamily: "verdana_regular",
-                              fontWeight: FontWeight.bold,
-                            ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * .5,
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: selectedJobType,
+                            isExpanded: true,
+                            items: items.map(Item).toList(),
+                            onChanged: (value) {
+                              setState(() => {selectedJobType = value!});
+                            },
+                            iconSize: 36,
+                            icon: Icon(Icons.arrow_drop_down),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.32,
-                      child: TextButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.green.shade500,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 22.0),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  selectedJobType != "Hourly"
+                      ? Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * .5,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: selectedArea,
+                            isExpanded: true,
+                            items: areas.map(area).toList(),
+                            onChanged: (value) {
+                              setState(() => {selectedArea = value!});
+                            },
+                            iconSize: 36,
+                            icon: const Icon(Icons.arrow_drop_down),
                           ),
-                          onPressed: () {},
-                          child: selectedJobType != "Hourly"
-                              ? const Text(
-                            "Riyal/Month",
-                            style: TextStyle(color: Colors.white),
-                          )
-                              : const Text(
-                            "Riyal/Hour",
-                            style: TextStyle(color: Colors.white),
-                          )),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        ),
+                      ),
+                    ),
+                  )
+                      : const SizedBox(),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Row(
                     children: [
-                      const Text(
-                        "Deadline",
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.65,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                          child: TextFormField(
+                            controller: salaryController,
+                            textAlign: TextAlign.center,
+                            keyboardType: TextInputType.text,
+                            // controller: phoneController,
+                            validator: (val) {
+                              if (val!.isEmpty) {
+                                return "your Salary is empty";
+                              }
+                              return null;
+                            },
+                            enableSuggestions: true,
+                            decoration: InputDecoration(
+                              focusColor: Colors.white,
+                              filled: true,
+                              alignLabelWithHint: false,
+                              //add prefix icon
+                              // suffixIcon: IconButton(
+                              //   icon: const Icon(
+                              //     Icons.close,
+                              //     color: Colors.grey,
+                              //   ),
+                              //   onPressed: () {
+                              //     setState(() => {
+                              //       FocusScope.of(context).unfocus(),
+                              //       // phoneController.text = ""
+                              //     });
+                              //   },
+                              // ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Colors.transparent, width: 1.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Colors.transparent, width: 1.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Colors.transparent, width: 1.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              fillColor: Colors.white,
+
+                              hintText: "Wright Your Job position Here",
+
+                              //make hint text
+                              hintStyle: TextStyle(
+                                color: Colors.green[900],
+                                fontSize: 22,
+                                fontFamily: "verdana_regular",
+                                fontWeight: FontWeight.bold,
+                              ),
+
+                              labelText: 'Salary',
+
+                              labelStyle: TextStyle(
+                                color: Colors.green[900],
+                                fontSize: 20,
+                                fontFamily: "verdana_regular",
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.64,
+                        width: MediaQuery.of(context).size.width * 0.32,
                         child: TextButton(
                             style: TextButton.styleFrom(
                               backgroundColor: Colors.green.shade500,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 22.0),
                             ),
-                            onPressed: () async{
-                              DateTime? newDeadline = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime(2050));
-
-                              if(newDeadline==null) return;
-                              setState(()=>{
-                                deadLineController = "${newDeadline.day}-${newDeadline.month}-${newDeadline.year}"
-                              });
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children:  [
-                                const Icon(
-                                  Icons.date_range,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  deadLineController,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                )
-                              ],
+                            onPressed: () {},
+                            child: selectedJobType != "Hourly"
+                                ? const Text(
+                              "Riyal/Month",
+                              style: TextStyle(color: Colors.white),
+                            )
+                                : const Text(
+                              "Riyal/Hour",
+                              style: TextStyle(color: Colors.white),
                             )),
                       )
                     ],
                   ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      const Text(
-                        "Joining",
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.64,
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.green.shade500,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10.0, vertical: 22.0),
-                            ),
-                            onPressed: () async{
-                              DateTime? newJoining = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime(2050));
-
-                              if(newJoining==null) return;
-                              setState(()=>{
-                                joiningController = "${newJoining.day}-${newJoining.month}-${newJoining.year}"
-                              });
-
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children:  [
-                                const Icon(
-                                  Icons.date_range,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  joiningController,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                )
-                              ],
-                            )),
-                      )
-                    ],
+                  const SizedBox(
+                    height: 20.0,
                   ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            setState(() => {counter++});
-                          },
-                          icon: const Icon(Icons.add),
+                        const Text(
+                          "Deadline",
+                          style: TextStyle(
+                              color: Colors.green,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          counter.toString(),
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() => {
-                              if (counter < 2) {} else {counter--}
-                            });
-                          },
-                          icon: const Icon(Icons.remove),
-                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.64,
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: Colors.green.shade500,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 22.0),
+                              ),
+                              onPressed: () async{
+                                DateTime? newDeadline = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime(2050));
+
+                                if(newDeadline==null) return;
+                                setState(()=>{
+                                  deadLineController = "${newDeadline.day}-${newDeadline.month}-${newDeadline.year}"
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children:  [
+                                  const Icon(
+                                    Icons.date_range,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    deadLineController,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  )
+                                ],
+                              )),
+                        )
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
-                  child: TextButton(
-                      style: TextButton.styleFrom(backgroundColor: Colors.green.shade900,   padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Text(
+                          "Joining",
+                          style: TextStyle(
+                              color: Colors.green,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.64,
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: Colors.green.shade500,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 22.0),
+                              ),
+                              onPressed: () async{
+                                DateTime? newJoining = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime(2050));
 
-                      onPressed: ()async{
-                        if(_formKey.currentState!.validate()) {
-                          editJobPost(jobTitleController.text,jobTitleDetails.text, selectedJobType,selectedArea,widget.lan,widget.lon, deadLineController,joiningController,salaryController.text.toString(), counter.toString());
+                                if(newJoining==null) return;
+                                setState(()=>{
+                                  joiningController = "${newJoining.day}-${newJoining.month}-${newJoining.year}"
+                                });
+
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children:  [
+                                  const Icon(
+                                    Icons.date_range,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    joiningController,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  )
+                                ],
+                              )),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              setState(() => {counter++});
+                            },
+                            icon: const Icon(Icons.add),
+                          ),
+                          Text(
+                            counter.toString(),
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() => {
+                                if (counter < 2) {} else {counter--}
+                              });
+                            },
+                            icon: const Icon(Icons.remove),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
+                    child: TextButton(
+                        style: TextButton.styleFrom(backgroundColor: Colors.green.shade900,   padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),),
+
+                        onPressed: ()async{
+                          if(_formKey.currentState!.validate()){
+                            if(selectedJobType == "Hourly"){
+                              LocationPermission permission = await Geolocator.requestPermission();
+                              var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+                              setState(()=>{
+                                lan = position.latitude,
+                                long = position.longitude
+
+                              });
+                              if(permission.name.isNotEmpty){
+                                editJobPost(jobTitleController.text,jobTitleDetails.text, selectedJobType,selectedArea,lan.toString(),long.toString(), deadLineController,joiningController,salaryController.text.toString(), counter.toString());
+
+                              }
+                              else{
+                                Fluttertoast.showToast(
+                                    msg: "If you don't permit your location, you can't post for hourly",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
+
+                              }
+                            }
+                            else{
+                              editJobPost(jobTitleController.text,jobTitleDetails.text, selectedJobType,selectedArea,"","", deadLineController,joiningController,salaryController.text.toString(), counter.toString());
+                            }
+
 
                           }
 
-                      }, child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.add, color: Colors.white,),
-                      Text("Update job", style: TextStyle(color: Colors.white),)
-                    ],
-                  )),
-                ),
-                const SizedBox(height: 20.0,)
-              ],
+                        }, child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.add, color: Colors.white,),
+                        Text("Create a job", style: TextStyle(color: Colors.white),)
+                      ],
+                    )),
+                  ),
+                  const SizedBox(height: 20.0,)
+                ],
+              ),
             )
           ],
         ),

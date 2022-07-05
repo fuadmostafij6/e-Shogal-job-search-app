@@ -2,12 +2,16 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eshogal/login/loginwithemail.dart';
 import 'package:eshogal/screens/creatjobScreen.dart';
 import 'package:eshogal/screens/editJobpost.dart';
 import 'package:eshogal/screens/employer_job_candidate_screen.dart';
 import 'package:eshogal/screens/workerjobdetails.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'nearme.dart';
 
 class WorkerDashboardScreen extends StatefulWidget {
   const WorkerDashboardScreen({Key? key}) : super(key: key);
@@ -18,6 +22,9 @@ class WorkerDashboardScreen extends StatefulWidget {
 
 class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
   int field = 0;
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut().then((value) => Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginWithEmail() )));
+  }
   Future<void> refresh() {
 
     return Future.delayed(const Duration(seconds: 2));
@@ -26,6 +33,58 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
   void initState() {
 
     super.initState();
+    nearByJobLitchenner();
+  }
+
+  nearByJobLitchenner(){
+    FirebaseFirestore.instance.collection("users").
+    doc(FirebaseAuth.instance.currentUser!.uid).collection("nearby_job")
+    .where("read", isEqualTo: false)
+        .snapshots().listen((event) {
+          try {
+            if(event.docs.isEmpty){
+              return;
+            }
+          } catch (e) {
+            return;
+          }
+          Get.defaultDialog(title: "Job Alert",
+          content: ListTile(
+            title: Text(event.docs.first.data()["tile"]),
+            subtitle: Text(event.docs.first.data()["Details"]),
+          ),
+            textConfirm: "Apply Now",
+            onConfirm: (){
+
+
+            var data = event.docs.first.data();
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          WorkerJobDetails(
+                            location: data["jobArea"],
+                            vacancy: data["vacancy"],
+                            jobDetails: data["Details"],
+                            jobTitle: data["tile"],
+                            salary:data["salary"],
+                            jobId: data["job_post_id"],
+                            postedBy: data["posted_by"],
+                          )));
+            FirebaseFirestore.instance.collection("users").
+            doc(FirebaseAuth.instance.currentUser!.uid).collection("nearby_job")
+                .doc(event.docs.first.id).update({"read": true});
+            },
+            onCancel: (){
+              FirebaseFirestore.instance.collection("users").
+              doc(FirebaseAuth.instance.currentUser!.uid).collection("nearby_job")
+              .doc(event.docs.first.id).update({"read": true});
+            //Get.back();
+          }
+          );
+
+    });
   }
 
   @override
@@ -34,6 +93,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
     var stream = FirebaseFirestore.instance.collection("job_post").snapshots();
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: field==0?Text("Worker DashBoard"):field==1?Text("Near Me"):field==2?Text("Profile"):field==3?Text("Setting"):Text("Worker DashBoard"),
         backgroundColor: Colors.grey[800],
@@ -174,6 +234,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
             SizedBox(height: 24,),
 
             SizedBox(height: 24,),
+            field ==0?
             StreamBuilder(
                 stream: stream,
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot>ss){
@@ -201,7 +262,14 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) =>
-                                         WorkerJobDetails(location: ss.data!.docs[index]["jobArea"], vacancy: ss.data!.docs[index]["vacancy"], jobDetails: ss.data!.docs[index]["Details"], jobTitle: ss.data!.docs[index]["tile"], salary: ss.data!.docs[index]["salary"], jobId: ss.data!.docs[index]["job_post_id"]
+                                         WorkerJobDetails(
+                                           location: ss.data!.docs[index]["jobArea"],
+                                           vacancy: ss.data!.docs[index]["vacancy"],
+                                           jobDetails: ss.data!.docs[index]["Details"],
+                                           jobTitle: ss.data!.docs[index]["tile"],
+                                           salary: ss.data!.docs[index]["salary"],
+                                           jobId: ss.data!.docs[index]["job_post_id"],
+                                           postedBy: ss.data!.docs[index]["posted_by"],
 
 
 
@@ -339,7 +407,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                               width: 10,
                                             ),
                                             Text(
-                                              "Abir hasan",
+                                              ss.data!.docs[index]["posted_by"],
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors
@@ -365,7 +433,15 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
 
                   }
 
-            })
+            }):
+            field == 1?NearMe():
+            SizedBox(),
+            TextButton(
+                style: TextButton.styleFrom(padding: EdgeInsets.fromLTRB(20, 15, 20, 15), backgroundColor: Colors.green.shade900),
+                onPressed: (){
+                  _signOut();
+
+                }, child: Text("Logout", style: TextStyle(color: Colors.white),))
 
 
           ],
