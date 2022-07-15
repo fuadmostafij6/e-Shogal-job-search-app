@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eshogal/screens/employer_dashboard_screen.dart';
+import 'package:eshogal/utils/my_pref.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -67,13 +68,14 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                 if (value.user!.uid.isNotEmpty)
                   {
                     fetchWorkerData(value.user!.uid),
+                    MyPrefs.setToken(FirebaseAuth.instance.currentUser!.uid),
                     setState(()=>buttonLoading=false),
                     Fluttertoast.showToast(
                         msg: "Login Successfully",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
                         timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red,
+                        backgroundColor: Colors.green[800],
                         textColor: Colors.white,
                         fontSize: 16.0)
                   }
@@ -125,8 +127,11 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
             SizedBox(
               height: size.height * 0.1,
             ),
-            Center(
-              child: Image.asset("assets/images/logo.png"),
+            Padding(
+              padding: const EdgeInsets.only(left: 38.0,right: 39),
+              child: Center(
+                child: Image.asset("assets/images/logo.png",fit: BoxFit.contain,),
+              ),
             ),
             const SizedBox(
               height: 50.0,

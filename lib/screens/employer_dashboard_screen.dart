@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eshogal/screens/creatjobScreen.dart';
 import 'package:eshogal/screens/editJobpost.dart';
 import 'package:eshogal/screens/employer_job_candidate_screen.dart';
+import 'package:eshogal/screens/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:get/state_manager.dart';
 
 class EmployerDashBoardScreen extends StatefulWidget {
   const EmployerDashBoardScreen({Key? key}) : super(key: key);
@@ -50,71 +53,47 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
               height: 24,
             ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          refresh();
-                        },
-                        child: Padding(
+            SizedBox(
+              height: 100,
+              child: ListView(
+          shrinkWrap: true,
+                primary: false,
+                scrollDirection: Axis.horizontal,
+                children: [
+
+                  InkWell(
+                    onTap: () {
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (_) => CreateJobScreen()));
+                    },
+                    child: Column(
+                      children: [
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.grey[200],
                                 border:
-                                    Border.all(color: Colors.green, width: 4)),
+                                Border.all(color: Colors.green, width: 4)),
                             height: 60,
                             width: 60,
                             child: Icon(
-                              Icons.list,
+                              Icons.book,
                               size: 40,
                               color: Colors.green[800],
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Center(child: Text("By me"))
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[200],
-                              border:
-                                  Border.all(color: Colors.green, width: 4)),
-                          height: 60,
-                          width: 60,
-                          child: Icon(
-                            Icons.book,
-                            size: 40,
-                            color: Colors.green[800],
-                          ),
+                        SizedBox(
+                          height: 5,
                         ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Center(child: Text("Open Jobs"))
-                    ],
+                        Center(child: Text("By Me"))
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: InkWell(
+                  SizedBox(width: 50,),
+                  InkWell(
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (_) => CreateJobScreen()));
@@ -145,39 +124,74 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
                       ],
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[200],
-                              border:
-                                  Border.all(color: Colors.green, width: 4)),
-                          height: 60,
-                          width: 60,
-                          child: Icon(
-                            Icons.settings,
-                            size: 40,
-                            color: Colors.green[800],
+                  SizedBox(width: 50,),
+                  InkWell(
+                    onTap: (){
+                      Get.to(Profile());
+                    },
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey[200],
+                                border:
+                                    Border.all(color: Colors.green, width: 4)),
+                            height: 60,
+                            width: 60,
+                            child: Icon(
+                              Icons.person_outline,
+                              size: 40,
+                              color: Colors.green[800],
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Center(child: Text("Settings"))
-                    ],
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Center(child: Text("Profile"))
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  SizedBox(width: 50,),
+
+                  InkWell(
+                    onTap: (){
+                      _signOut();
+                    },
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey[200],
+                                border:
+                                Border.all(color: Colors.green, width: 4)),
+                            height: 60,
+                            width: 60,
+                            child: Icon(
+                              Icons.logout,
+                              size: 40,
+                              color: Colors.green[800],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Center(child: Text("Logout"))
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 50,),
+                ],
+              ),
             ),
-            SizedBox(
-              height: 24,
-            ),
+
             Text(
               "Job Posted By Me",
               style: TextStyle(
@@ -203,11 +217,12 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
                       if (ss.hasData) {
                         if (ss.data!.docs.length == 0) {
                           return Center(
-                            child: Text("No data"),
+                            child: Text("No Job Found "),
                           );
                         } else {
                           return Expanded(
                               child: ListView.builder(
+                                // reverse: true,
                                   itemCount: ss.data!.docs.length,
                                   itemBuilder: (context, index) {
                                     var data = ss.data!.docs[index];
@@ -261,7 +276,7 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
                                                           Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
-                                                                    .center,
+                                                                    .spaceBetween,
                                                             children: [
                                                               TextButton(
                                                                   onPressed:
@@ -294,12 +309,26 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
                                                               TextButton(
                                                                   onPressed:
                                                                       () {
-                                                                    deleteJob(ss
-                                                                            .data!
-                                                                            .docs[index]
-                                                                        [
-                                                                        "job_post_id"]);
-                                                                    refresh();
+                                                                        Get.defaultDialog(
+
+                                                                          buttonColor: Colors.green,
+                                                                          title: "Are you sure want to delete?",
+                                                                          content: Container(),
+                                                                          onConfirm: (){
+                                                                            deleteJob(ss
+                                                                                .data!
+                                                                                .docs[index]
+                                                                            [
+                                                                            "job_post_id"]);
+                                                                            refresh();
+                                                                          },
+                                                                          cancelTextColor: Colors.red,
+                                                                          confirmTextColor: Colors.white,
+                                                                          onCancel: (){
+                                                                          },
+                                                                        );
+
+
                                                                   },
                                                                   child: const Text(
                                                                       "Delete")),
@@ -426,12 +455,7 @@ class _EmployerDashBoardScreenState extends State<EmployerDashBoardScreen> {
                 }),
 
 
-            TextButton(
-                style: TextButton.styleFrom(padding: EdgeInsets.fromLTRB(20, 15, 20, 15), backgroundColor: Colors.green.shade900),
-                onPressed: (){
-                  _signOut();
-                  
-                }, child: Text("Logout", style: TextStyle(color: Colors.white),))
+
             // jobList.isEmpty? Center(child: CircularProgressIndicator(),):
             // Expanded(
             //

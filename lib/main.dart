@@ -1,8 +1,11 @@
 
 import 'package:eshogal/screens/spalash_screen.dart';
+import 'package:eshogal/utils/my_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'login/signup_screen.dart';
 
 void main() async{
 
@@ -14,10 +17,24 @@ void main() async{
       const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  String ?id;
+
+  @override
+  void initState() {
+    MyPrefs.getToken().then((value) {
+      id= value;
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -31,7 +48,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home:const SplashScreen22()
+      home: LoginSignupScreen()
     );
   }
 }

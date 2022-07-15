@@ -1,9 +1,13 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eshogal/screens/profile_screen.dart';
 import 'package:eshogal/screens/user_admin_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart'as UrlLauncher;
 import 'package:url_launcher/url_launcher.dart';
+
+import 'creatjobScreen.dart';
 
 class EmployerJobCandidateScreen extends StatefulWidget {
   final String jobTitle;
@@ -22,7 +26,7 @@ class _EmployerJobCandidateScreenState extends State<EmployerJobCandidateScreen>
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Employer JobCandidate"),
+        title: Text("Employer Job Details"),
         backgroundColor: Colors.grey[800],
       ),
       body: Column(
@@ -34,51 +38,11 @@ class _EmployerJobCandidateScreenState extends State<EmployerJobCandidateScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey[200],
-                            border: Border.all(color: Colors.green,width: 4)
-                        ),
-                        height: 60,
-                        width: 60,
-                        child: Icon(Icons.list,size: 40,color: Colors.green[800],),
 
-                      ),
-                    ),
-                    SizedBox(height: 5,),
-                    Center(child: Text("By me"))
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey[200],
-                            border: Border.all(color: Colors.green,width: 4)
-                        ),
-                        height: 60,
-                        width: 60,
-                        child: Icon(Icons.book,size: 40,color: Colors.green[800],),
-
-                      ),
-                    ),
-                    SizedBox(height: 5,),
-                    Center(child: Text("Open Jobs"))
-                  ],
-                ),
-              ),
-              Expanded(
+              InkWell(
+                onTap: (){
+                  Get.to(CreateJobScreen());
+                },
                 child: Column(
                   children: [
                     Padding(
@@ -100,7 +64,11 @@ class _EmployerJobCandidateScreenState extends State<EmployerJobCandidateScreen>
                   ],
                 ),
               ),
-              Expanded(
+              SizedBox(width: 50,),
+              InkWell(
+                onTap: (){
+                  Get.to(Profile());
+                },
                 child: Column(
                   children: [
                     Padding(
@@ -120,7 +88,7 @@ class _EmployerJobCandidateScreenState extends State<EmployerJobCandidateScreen>
                     ),
                     const SizedBox(height: 5,),
 
-                    const Center(child: Text("Settings"))
+                    const Center(child: Text("Profile"))
                   ],
                 ),
               ),
@@ -232,7 +200,7 @@ class _EmployerJobCandidateScreenState extends State<EmployerJobCandidateScreen>
                                                         FontWeight
                                                             .bold)),
                                                     onPressed: () {
-                                                      launchUrl("tel://21213123123");
+                                                      _makePhoneCall(ss.data!.docs[index]["worker_phone"]);
                                                     },
                                                   ),
 
@@ -261,11 +229,11 @@ class _EmployerJobCandidateScreenState extends State<EmployerJobCandidateScreen>
     );
 
   }
-  void launchUrl(String url) async {
-    if (await canLaunch(url)) {
-      launch(url);
-    } else {
-      throw "Could not launch $url";
-    }
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
   }
 }

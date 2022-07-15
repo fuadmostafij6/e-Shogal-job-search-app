@@ -123,151 +123,152 @@ class _EditJobPostState extends State<EditJobPost> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              color: Colors.white,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 15.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey[200],
-                                    border: Border.all(
-                                        color: Colors.green, width: 4)),
-                                height: 60,
-                                width: 60,
-                                child: Icon(
-                                  Icons.list,
-                                  size: 40,
-                                  color: Colors.green[800],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            const Center(child: Text("All Users"))
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey[200],
-                                    border: Border.all(
-                                        color: Colors.green, width: 4)),
-                                height: 60,
-                                width: 60,
-                                child: Icon(
-                                  Icons.book,
-                                  size: 40,
-                                  color: Colors.green[800],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            const Center(child: Text("Users"))
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => const CreateJobScreen()));
-                          },
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(0.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.grey[200],
-                                      border: Border.all(
-                                          color: Colors.green, width: 4)),
-                                  height: 60,
-                                  width: 60,
-                                  child: Icon(
-                                    Icons.book,
-                                    size: 40,
-                                    color: Colors.green[800],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Center(child: Text("Job Post"))
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey[200],
-                                    border: Border.all(
-                                        color: Colors.green, width: 4)),
-                                height: 60,
-                                width: 60,
-                                child: Icon(
-                                  Icons.settings,
-                                  size: 40,
-                                  color: Colors.green[800],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            const Center(child: Text("Settings"))
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 30.0,
-                  ),
-                  const Text(
-                    "Post Your Job Details Here",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 15.0,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
+            SizedBox(height: 30,),
+            // Container(
+            //   color: Colors.white,
+            //   child: Column(
+            //     children: [
+            //       const SizedBox(
+            //         height: 15.0,
+            //       ),
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //           Expanded(
+            //             child: Column(
+            //               children: [
+            //                 Padding(
+            //                   padding: const EdgeInsets.all(0.0),
+            //                   child: Container(
+            //                     decoration: BoxDecoration(
+            //                         borderRadius: BorderRadius.circular(10),
+            //                         color: Colors.grey[200],
+            //                         border: Border.all(
+            //                             color: Colors.green, width: 4)),
+            //                     height: 60,
+            //                     width: 60,
+            //                     child: Icon(
+            //                       Icons.list,
+            //                       size: 40,
+            //                       color: Colors.green[800],
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 const SizedBox(
+            //                   height: 5,
+            //                 ),
+            //                 const Center(child: Text("All Users"))
+            //               ],
+            //             ),
+            //           ),
+            //           Expanded(
+            //             child: Column(
+            //               children: [
+            //                 Padding(
+            //                   padding: const EdgeInsets.all(0.0),
+            //                   child: Container(
+            //                     decoration: BoxDecoration(
+            //                         borderRadius: BorderRadius.circular(10),
+            //                         color: Colors.grey[200],
+            //                         border: Border.all(
+            //                             color: Colors.green, width: 4)),
+            //                     height: 60,
+            //                     width: 60,
+            //                     child: Icon(
+            //                       Icons.book,
+            //                       size: 40,
+            //                       color: Colors.green[800],
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 const SizedBox(
+            //                   height: 5,
+            //                 ),
+            //                 const Center(child: Text("Users"))
+            //               ],
+            //             ),
+            //           ),
+            //           Expanded(
+            //             child: InkWell(
+            //               onTap: () {
+            //                 Navigator.push(
+            //                     context,
+            //                     MaterialPageRoute(
+            //                         builder: (_) => const CreateJobScreen()));
+            //               },
+            //               child: Column(
+            //                 children: [
+            //                   Padding(
+            //                     padding: const EdgeInsets.all(0.0),
+            //                     child: Container(
+            //                       decoration: BoxDecoration(
+            //                           borderRadius: BorderRadius.circular(10),
+            //                           color: Colors.grey[200],
+            //                           border: Border.all(
+            //                               color: Colors.green, width: 4)),
+            //                       height: 60,
+            //                       width: 60,
+            //                       child: Icon(
+            //                         Icons.book,
+            //                         size: 40,
+            //                         color: Colors.green[800],
+            //                       ),
+            //                     ),
+            //                   ),
+            //                   const SizedBox(
+            //                     height: 5,
+            //                   ),
+            //                   const Center(child: Text("Job Post"))
+            //                 ],
+            //               ),
+            //             ),
+            //           ),
+            //           Expanded(
+            //             child: Column(
+            //               children: [
+            //                 Padding(
+            //                   padding: const EdgeInsets.all(0.0),
+            //                   child: Container(
+            //                     decoration: BoxDecoration(
+            //                         borderRadius: BorderRadius.circular(10),
+            //                         color: Colors.grey[200],
+            //                         border: Border.all(
+            //                             color: Colors.green, width: 4)),
+            //                     height: 60,
+            //                     width: 60,
+            //                     child: Icon(
+            //                       Icons.settings,
+            //                       size: 40,
+            //                       color: Colors.green[800],
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 const SizedBox(
+            //                   height: 5,
+            //                 ),
+            //                 const Center(child: Text("Settings"))
+            //               ],
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //       const SizedBox(
+            //         height: 30.0,
+            //       ),
+            //       const Text(
+            //         "Post Your Job Details Here",
+            //         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            //       ),
+            //       const SizedBox(
+            //         height: 15.0,
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 15.0,
+            // ),
 
             Form(
               key: _formKey,

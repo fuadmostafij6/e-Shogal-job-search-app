@@ -23,7 +23,6 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       phoneNumber: phoneController.text,
       verificationCompleted: (PhoneAuthCredential credential) async {
         await auth.signInWithCredential(credential).then((value) {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>  LoginWithPhone(verificationID: verificationID,)));
           print("SIgnUp");
          setState(()=>{
            otp = true,
@@ -37,7 +36,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       codeSent: (String verificationId, int? resendToken) {
 
         verificationID = verificationId;
-        setState(() {});
+        setState(() {
+
+        });
       },
       codeAutoRetrievalTimeout: (String verificationId) {
         verificationID = verificationId;
@@ -57,14 +58,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             SizedBox(
               height: size.height * 0.2,
             ),
-            Center(
-              child: Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(10),
-                    shape: BoxShape.rectangle),
+            Padding(
+              padding: const EdgeInsets.only(left: 38.0,right: 39),
+              child: Center(
+                child: Image.asset("assets/images/logo.png",fit: BoxFit.contain,),
               ),
             ),
             const SizedBox(
@@ -121,6 +118,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                         decoration: InputDecoration(
                           focusColor: Colors.white,
                           filled: true,
+                          // prefixIcon: Padding(
+                          //   padding: const EdgeInsets.only(top: 12.0,right: 6),
+                          //   child: Text("+966",style: TextStyle(fontSize: 18,color: Colors.black),),
+                          // ),
 
                           //add prefix icon
                           suffixIcon: IconButton(
@@ -154,7 +155,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                           //make hint text
                           hintStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),
@@ -163,7 +164,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
 
                           labelStyle: TextStyle(
                             color: Colors.green[900],
-                            fontSize: 24,
+                            fontSize: 18,
                             fontFamily: "verdana_regular",
                             fontWeight: FontWeight.bold,
                           ),
@@ -178,6 +179,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                         if (_formKey.currentState!.validate()) {
                           loginWithPhone();
 
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>  LoginWithPhone(verificationID: verificationID,)));
 
                         }
                       },
@@ -189,7 +191,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       child: SizedBox(
                         height: 30,
                         width: size.width*0.7,
-                        child:const Center(child: Text("Login/Signup", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24.0),)),
+                        child:const Center(child: Text("Login/Signup", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0),)),
                       )
                     ),
                     const SizedBox(

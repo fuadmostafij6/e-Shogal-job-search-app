@@ -1,4 +1,5 @@
 
+import 'package:eshogal/registered/registeredwithemail.dart';
 import 'package:eshogal/screens/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 class LoginWithPhone extends StatefulWidget {
@@ -28,16 +29,16 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
             SizedBox(
               height: size.height * 0.3,
             ),
-            Center(
-              child: Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(10),
-                    shape: BoxShape.rectangle),
-              ),
-            ),
+            // Center(
+            //   child: Container(
+            //     height: 100,
+            //     width: 100,
+            //     decoration: BoxDecoration(
+            //         color: Colors.green,
+            //         borderRadius: BorderRadius.circular(10),
+            //         shape: BoxShape.rectangle),
+            //   ),
+            // ),
             const SizedBox(
               height: 50.0,
             ),
@@ -146,7 +147,7 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
                     TextButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>const DashBoardScreen()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegisteredWithEmail()));
                           }
                         },
                         style: TextButton.styleFrom(
@@ -157,7 +158,7 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
                         child: SizedBox(
                           height: 30,
                           width: size.width*0.7,
-                          child:const Center(child: Text("Login with phone", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24.0),)),
+                          child:const Center(child: Text("Login with phone", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),)),
                         )
                     ),
                     const SizedBox(

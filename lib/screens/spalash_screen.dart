@@ -93,17 +93,20 @@ class _SplashScreen22State extends State<SplashScreen22> {
               SizedBox(
                 height: 30,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                child: Center(
-                  child: Image.asset(
-                    "assets/images/logo.png",
-                    // / height: 400,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    // width: size.width,
+              Padding(
+                padding: const EdgeInsets.only(left: 48.0,right: 40),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/logo.png",
+                      // / height: 400,
+                      width: double.infinity,
+                      fit: BoxFit.fitHeight,
+                      // width: size.width,
+                    ),
                   ),
                 ),
               ),

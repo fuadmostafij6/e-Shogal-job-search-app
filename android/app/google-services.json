@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1042788269927-d50ucb5b1p6kg7d3mqaeo70vmmcu4o5j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.eshogal",
+            "certificate_hash": "40415928c884cdef870421b8cdb99cab5d7d983c"
+          }
+        },
+        {
+          "client_id": "1042788269927-p380a9db079r0jq184htkq6o56qfb1se.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.eshogal",
+            "certificate_hash": "0e4dc48c04aac7da4650209d213d6edd51acc484"
+          }
+        },
+        {
           "client_id": "1042788269927-m37eph8km6o3iph72knmqo02729hub99.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -149,15 +149,18 @@ double ?long;
         child: Column(
           children: [
 
-            Center(
-              child: Container(
-                height: size.height * 0.3,
-                width: size.width*0.9-10,
-                decoration: BoxDecoration(
-                 
-                    borderRadius: BorderRadius.circular(10),
-                    shape: BoxShape.rectangle),
-                child: Image.asset("assets/images/logo.png",height: 50,width: double.infinity,),
+            Padding(
+              padding: const EdgeInsets.only(left: 48.0,right: 48),
+              child: Center(
+                child: Container(
+                  height: size.height * 0.3,
+                  width: size.width*0.9-10,
+                  decoration: BoxDecoration(
+
+                      borderRadius: BorderRadius.circular(10),
+                      shape: BoxShape.rectangle),
+                  child: Image.asset("assets/images/logo.png",height: 50,width: double.infinity,),
+                ),
               ),
             ),
             const SizedBox(
@@ -558,29 +561,33 @@ double ?long;
                     const SizedBox(
                       height: 20.0,
                     ),
-                    Container(
-                      width: size.width*0.85-10,
-                      height: 100,
-                      decoration:  const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10))
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18.0,right: 9),
+                      child: Container(
+                        width: double.infinity,
+                        height: 70,
 
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: jobTypeList.map((e) {
-                          return Expanded(
-                            child: RadioListTile<String>(value: e, title: Text(e) ,groupValue: selectedJobType, onChanged: (value){
-                              setState(()=>{
-                                selectedJobType = value!,
+                        decoration:  const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(10))
 
-                              }
-                              );
-                              
-                            }),
-                          );
-                        }).toList()
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: jobTypeList.map((e) {
+                            return Expanded(
+                              child: RadioListTile<String>(value: e, title: Text(e) ,groupValue: selectedJobType, onChanged: (value){
+                                setState(()=>{
+                                  selectedJobType = value!,
+
+                                }
+                                );
+
+                              }),
+                            );
+                          }).toList()
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10.0,),

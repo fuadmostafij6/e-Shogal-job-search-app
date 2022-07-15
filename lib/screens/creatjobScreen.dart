@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eshogal/screens/employer_dashboard_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -77,23 +78,25 @@ List userDataList =[];
     };
     var res = myJob
         .set(jobDetailsData)
-        .then((value) =>
-        Fluttertoast.showToast(
+        .then((value) {
+           Fluttertoast.showToast(
             msg: "Job Post Successfully",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16.0
-        ))
+        );
+           Get.offAll(EmployerDashBoardScreen());
+        })
         .catchError((error) =>
         Fluttertoast.showToast(
             msg: "Something Wrong",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16.0
         ));
@@ -197,139 +200,140 @@ return Scaffold(
             Form(
               key: _formKey,
               child: Container(
-                color: Colors.white,
+
+             //   color: Colors.white,
                 child: Column(
                   children: [
-                    const SizedBox(
-                      height: 15.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(0.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.grey[200],
-                                      border: Border.all(
-                                          color: Colors.green, width: 4)),
-                                  height: 60,
-                                  width: 60,
-                                  child: Icon(
-                                    Icons.list,
-                                    size: 40,
-                                    color: Colors.green[800],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Center(child: Text("All Users"))
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(0.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.grey[200],
-                                      border: Border.all(
-                                          color: Colors.green, width: 4)),
-                                  height: 60,
-                                  width: 60,
-                                  child: Icon(
-                                    Icons.book,
-                                    size: 40,
-                                    color: Colors.green[800],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Center(child: Text("Users"))
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => CreateJobScreen()));
-                            },
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(0.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.grey[200],
-                                        border: Border.all(
-                                            color: Colors.green, width: 4)),
-                                    height: 60,
-                                    width: 60,
-                                    child: Icon(
-                                      Icons.book,
-                                      size: 40,
-                                      color: Colors.green[800],
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                const Center(child: Text("Job Post"))
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(0.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.grey[200],
-                                      border: Border.all(
-                                          color: Colors.green, width: 4)),
-                                  height: 60,
-                                  width: 60,
-                                  child: Icon(
-                                    Icons.settings,
-                                    size: 40,
-                                    color: Colors.green[800],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Center(child: Text("Settings"))
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                    // const SizedBox(
+                    //   height: 15.0,
+                    // ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                    //   children: [
+                    //     Expanded(
+                    //       child: Column(
+                    //         children: [
+                    //           Padding(
+                    //             padding: const EdgeInsets.all(0.0),
+                    //             child: Container(
+                    //               decoration: BoxDecoration(
+                    //                   borderRadius: BorderRadius.circular(10),
+                    //                   color: Colors.grey[200],
+                    //                   border: Border.all(
+                    //                       color: Colors.green, width: 4)),
+                    //               height: 60,
+                    //               width: 60,
+                    //               child: Icon(
+                    //                 Icons.list,
+                    //                 size: 40,
+                    //                 color: Colors.green[800],
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           const SizedBox(
+                    //             height: 5,
+                    //           ),
+                    //           const Center(child: Text("All Users"))
+                    //         ],
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       child: Column(
+                    //         children: [
+                    //           Padding(
+                    //             padding: const EdgeInsets.all(0.0),
+                    //             child: Container(
+                    //               decoration: BoxDecoration(
+                    //                   borderRadius: BorderRadius.circular(10),
+                    //                   color: Colors.grey[200],
+                    //                   border: Border.all(
+                    //                       color: Colors.green, width: 4)),
+                    //               height: 60,
+                    //               width: 60,
+                    //               child: Icon(
+                    //                 Icons.book,
+                    //                 size: 40,
+                    //                 color: Colors.green[800],
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           const SizedBox(
+                    //             height: 5,
+                    //           ),
+                    //           const Center(child: Text("Users"))
+                    //         ],
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       child: InkWell(
+                    //         onTap: () {
+                    //           Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                   builder: (_) => CreateJobScreen()));
+                    //         },
+                    //         child: Column(
+                    //           children: [
+                    //             Padding(
+                    //               padding: const EdgeInsets.all(0.0),
+                    //               child: Container(
+                    //                 decoration: BoxDecoration(
+                    //                     borderRadius: BorderRadius.circular(10),
+                    //                     color: Colors.grey[200],
+                    //                     border: Border.all(
+                    //                         color: Colors.green, width: 4)),
+                    //                 height: 60,
+                    //                 width: 60,
+                    //                 child: Icon(
+                    //                   Icons.book,
+                    //                   size: 40,
+                    //                   color: Colors.green[800],
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             const SizedBox(
+                    //               height: 5,
+                    //             ),
+                    //             const Center(child: Text("Job Post"))
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       child: Column(
+                    //         children: [
+                    //           Padding(
+                    //             padding: const EdgeInsets.all(0.0),
+                    //             child: Container(
+                    //               decoration: BoxDecoration(
+                    //                   borderRadius: BorderRadius.circular(10),
+                    //                   color: Colors.grey[200],
+                    //                   border: Border.all(
+                    //                       color: Colors.green, width: 4)),
+                    //               height: 60,
+                    //               width: 60,
+                    //               child: Icon(
+                    //                 Icons.settings,
+                    //                 size: 40,
+                    //                 color: Colors.green[800],
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           const SizedBox(
+                    //             height: 5,
+                    //           ),
+                    //           const Center(child: Text("Settings"))
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     const SizedBox(
                       height: 30.0,
                     ),
                     const Text(
-                      "Post Your Job Details Here",
+                      "Post Your Job",
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
@@ -566,7 +570,10 @@ return Scaffold(
                       listOfKm.forEach((element) {
                         items.add(InkWell(
                           onTap: (){
-                            selectKm =element;
+                            setState((){
+                              selectKm =element;
+
+                            });
                             Get.back();
                           },
                           child: Container(
@@ -857,15 +864,15 @@ return Scaffold(
 
                       onPressed: ()async{
                         if(_formKey.currentState!.validate() && userDataList.isNotEmpty){
-                          if(selectedJobType == "Hourly"){
-                            LocationPermission permission = await Geolocator.requestPermission();
-                            var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                          LocationPermission permission = await Geolocator.requestPermission();
+                          var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-                            setState(()=>{
-                              lan = position.latitude,
-                              long = position.longitude
+                          setState(()=>{
+                            lan = position.latitude,
+                            long = position.longitude
 
-                            });
+                          });
+
                             if(permission.name.isNotEmpty){
                               if(selectedJobType=="Hourly")
                                 {
@@ -919,10 +926,7 @@ return Scaffold(
                               );
 
                             }
-                          }
-                          else{
-                            addJobPost(jobTitleController.text,jobTitleDetails.text, selectedJobType,selectedArea,"","", deadLineController,joiningController,salaryController.text.toString(), counter.toString());
-                          }
+
 
 
                         }
